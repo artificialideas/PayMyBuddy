@@ -11,15 +11,13 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name="ExternalTransfer")
-public class ExternalTransfer extends Transfer {
+@Table(name="InternalTransfers")
+public class InternalTransfer extends Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_transfer")
     private int id;
 
-    @Column(name = "id_receiver_bank", nullable = false)
-    private int bankAccountId;
-
-    private BankAccount bankAccount;
+    @Column(name = "id_receiver_user", nullable = false)
+    private User receiver;
 }
