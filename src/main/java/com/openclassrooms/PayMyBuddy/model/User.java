@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -34,5 +35,6 @@ public class User {
     @Column(name = "savings", nullable = false)
     private float savings;
 
-    private List<Contacts> friends;
+    @OneToMany(targetEntity= Contact.class)
+    private List contact;
 }

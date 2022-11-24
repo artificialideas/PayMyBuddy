@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Data
@@ -27,6 +29,7 @@ public class BankAccount {
     @Column(name = "swift", nullable = false)
     private String swift;
 
-    @Column(name = "id_owner", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "id_owner", nullable = false)
     private User owner;
 }

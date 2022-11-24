@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Data
@@ -15,11 +17,10 @@ import javax.persistence.Table;
 public class ExternalTransfer extends Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_transfer")
+    @Column(name = "id_external")
     private int id;
 
-    @Column(name = "id_receiver_bank", nullable = false)
-    private int bankAccountId;
-
+    @OneToOne
+    @JoinColumn(name = "id_receiver_bank", nullable = false)
     private BankAccount bankAccount;
 }

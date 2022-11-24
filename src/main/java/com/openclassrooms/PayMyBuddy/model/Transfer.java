@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -25,9 +27,11 @@ public class Transfer {
     @Column(name = "amount", nullable = false)
     private float amount;
 
-    @Column(name = "id_internal_transfer")
+    @OneToOne
+    @JoinColumn(name = "id_internal_transfer", nullable = false)
     private InternalTransfer internalTransfer;
 
-    @Column(name = "id_external_transfer")
-    private InternalTransfer externalTransfer;
+    @OneToOne
+    @JoinColumn(name = "id_external_transfer", nullable = false)
+    private ExternalTransfer externalTransfer;
 }
