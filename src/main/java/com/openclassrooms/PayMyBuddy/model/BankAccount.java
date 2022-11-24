@@ -28,7 +28,5 @@ public class BankAccount {
     private String swift;
 
     @Column(name = "id_owner", nullable = false)
-    private int ownerId;
-
     private User owner;
 }

@@ -34,6 +34,5 @@ public class User {
     @Column(name = "savings", nullable = false)
     private float savings;
 
-    //Add Contacts table
-    private List<User> friends;
+    private List<Contacts> friends;
 }
