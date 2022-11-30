@@ -5,19 +5,20 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "Contacts")
-public class Contact {
+public class Contact implements Serializable {
     @Id
-    @OneToOne
+    @ManyToOne(targetEntity= User.class)
     @JoinColumn(name="id_user", nullable = false)
     private User user;
 
-    @OneToOne
+    @ManyToOne(targetEntity= User.class)
     @JoinColumn(name="id_friend", nullable = false)
     private User friend;
 }
