@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_bank")
-    private int id;
+    private long id;
 
     @Column(name = "credentials", nullable = false)
     private String credentials;
@@ -29,7 +30,7 @@ public class BankAccount {
     @Column(name = "swift", nullable = false)
     private String swift;
 
-    @OneToOne
-    @JoinColumn(name = "id_owner", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_owner", referencedColumnName="id_user", unique = true, nullable = false)
     private User owner;
 }

@@ -3,6 +3,7 @@ package com.openclassrooms.PayMyBuddy.model;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,11 +15,11 @@ import java.io.Serializable;
 @Table(name = "Contacts")
 public class Contact implements Serializable {
     @Id
-    @ManyToOne(targetEntity= User.class)
-    @JoinColumn(name="id_user", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_user", referencedColumnName="id_user", unique = true, nullable = false)
     private User user;
 
-    @ManyToOne(targetEntity= User.class)
-    @JoinColumn(name="id_friend", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_friend", referencedColumnName="id_user", unique = true, nullable = false)
     private User friend;
 }

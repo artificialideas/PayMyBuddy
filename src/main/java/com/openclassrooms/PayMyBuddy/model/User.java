@@ -4,11 +4,13 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -18,7 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private int id;
+    private long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -33,8 +35,8 @@ public class User {
     private String password;
 
     @Column(name = "savings", nullable = false)
-    private float savings;
+    private BigDecimal savings;
 
-    @OneToMany(targetEntity= Contact.class)
-    private List contact;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Users", orphanRemoval = true)
+    private List<User> contacts;
 }
