@@ -2,7 +2,7 @@ UML Class diagram: ![PayMyBuddy - UML Class diagram](https://user-images.githubu
 
 MSSQL scripts:
 - Tables creation: [mssqlPMB_creation.docx](https://github.com/artificialideas/PayMyBuddy/files/10131145/mssqlPMB_creation.docx)
-- Mock data: [mssqlPMB_data.docx](https://github.com/artificialideas/PayMyBuddy/files/10085405/mssqlPMB_data.docx)
+- Mock data: [mssqlPMB_data.docx](https://github.com/artificialideas/PayMyBuddy/files/10133692/mssqlPMB_data.docx)
 
 Generated Relational DB Schema diagram:
-![generated-dbSchemaDiagram](https://user-images.githubusercontent.com/73825553/205018983-30d278ef-00b4-4955-951e-08cb83021af6.png)
+![generated-dbSchemaDiagram](https://user-images.githubusercontent.com/73825553/205091942-c8d99dec-203b-4742-b556-7c7987ae7d9e.png)
