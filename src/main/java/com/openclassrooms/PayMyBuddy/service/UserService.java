@@ -2,12 +2,12 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.model.User;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 public interface UserService {
-    ArrayList<User> findAllUsers();
+    Iterable<User> findAllUsers();
 
-    User findUserByID(long id);
+    Optional<User> findUserByID(long id);
 
     void addUser();
 

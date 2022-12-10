@@ -1,29 +1,25 @@
 package com.openclassrooms.PayMyBuddy.service;
 
+import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    com.openclassrooms.PayMyBuddy.dao.UserRepository UserRepository;
+    private UserRepository UserRepository;
 
     @Override
-    public ArrayList<User> findAllUsers() {
-        return (ArrayList<User>) UserRepository.findAll();
+    public Iterable<User> findAllUsers() {
+        return UserRepository.findAll();
     }
 
     @Override
-    public User findUserByID(long id) {
-        Optional<User> opt = UserRepository.findById(id);
-        if (opt.isPresent())
-            return opt.get();
-        else
-            return null;
+    public Optional<User> findUserByID(long id) {
+        return UserRepository.findById(id);
     }
 
     @Override

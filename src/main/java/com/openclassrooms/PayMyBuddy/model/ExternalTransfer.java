@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,6 +23,16 @@ public class ExternalTransfer {
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_receiver_bank", referencedColumnName="id_bank", unique = true, nullable = false)
+    @JoinColumn(
+            name = "id_receiver_bank",
+            referencedColumnName="id_bank",
+            unique = true,
+            nullable = false)
     private BankAccount bankAccount;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(
+            name="id_transfer_table",
+            nullable = false)
+    private Transfer transferId;
 }

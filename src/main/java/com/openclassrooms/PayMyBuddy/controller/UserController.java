@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -17,12 +17,12 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
 
     @GetMapping("/findall")
-    public List<User> getAllUsers() {
+    public Iterable<User> getAllUsers() {
         return userServiceImpl.findAllUsers();
     }
 
     @GetMapping("/findbyid/{id}")
-    public User getUserById(
+    public Optional<User> getUserById(
             @PathVariable long id) {
         return userServiceImpl.findUserByID(id);
     }

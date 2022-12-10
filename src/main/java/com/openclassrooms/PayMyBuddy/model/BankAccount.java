@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
@@ -30,7 +30,11 @@ public class BankAccount {
     @Column(name = "swift", nullable = false)
     private String swift;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_owner", referencedColumnName="id_user", unique = true, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_owner",
+            referencedColumnName="id_user",
+            unique = true,
+            nullable = false)
     private User owner;
 }

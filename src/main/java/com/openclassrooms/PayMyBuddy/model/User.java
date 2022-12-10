@@ -2,15 +2,21 @@ package com.openclassrooms.PayMyBuddy.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -37,6 +43,28 @@ public class User {
     @Column(name = "savings", nullable = false)
     private BigDecimal savings;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Users", orphanRemoval = true)
-    private List<User> contacts;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name="Contacts",
+        joinColumns = @JoinColumn(name="id_user"),
+        inverseJoinColumns = @JoinColumn(name="id_friend")
+    )
+    private List<User> contacts = new ArrayList<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_bank",
+            nullable = false)
+    private List<BankAccount> bankAccounts = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name="id_transfer",
+            referencedColumnName="id_user",
+            unique = true,
+            nullable = false)
+    private List<Transfer> transfers = new ArrayList<>();
 }
