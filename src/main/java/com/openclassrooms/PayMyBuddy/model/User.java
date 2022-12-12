@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,25 +45,25 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name="Contacts",
-        joinColumns = @JoinColumn(name="id_user"),
-        inverseJoinColumns = @JoinColumn(name="id_friend")
-    )
+        joinColumns = @JoinColumn(
+                name="id_user",
+                referencedColumnName = "id_user"),
+        inverseJoinColumns = @JoinColumn(
+                name="id_friend",
+                referencedColumnName = "id_user"))
     private List<User> contacts = new ArrayList<>();
 
     @OneToMany(
+            mappedBy = "owner",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "id_bank",
-            nullable = false)
     private List<BankAccount> bankAccounts = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name="id_transfer",
-            referencedColumnName="id_user",
-            unique = true,
-            nullable = false)
+    @OneToMany(
+            mappedBy = "emitter",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
     private List<Transfer> transfers = new ArrayList<>();
 }

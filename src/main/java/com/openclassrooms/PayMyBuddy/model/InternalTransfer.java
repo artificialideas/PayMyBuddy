@@ -11,9 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @Data
 @Entity
@@ -24,18 +23,22 @@ public class InternalTransfer {
     @Column(name = "id_internal")
     private long id;
 
-    @OneToMany(
+    @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     @JoinColumn(
             name = "id_receiver_user",
+            referencedColumnName="id_user",
+            unique = true,
             nullable = false)
-    private List<User> receiver;
+    private User receiver;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name="id_transfer_table",
+            referencedColumnName="id_transfer",
+            unique = true,
             nullable = false)
-    private Transfer transferId;
+    private Transfer transfer;
 }

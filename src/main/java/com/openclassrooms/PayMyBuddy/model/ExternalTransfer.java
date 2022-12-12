@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +23,10 @@ public class ExternalTransfer {
     @Column(name = "id_external")
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @JoinColumn(
             name = "id_receiver_bank",
             referencedColumnName="id_bank",
@@ -30,9 +34,11 @@ public class ExternalTransfer {
             nullable = false)
     private BankAccount bankAccount;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name="id_transfer_table",
+            referencedColumnName="id_transfer",
+            unique = true,
             nullable = false)
-    private Transfer transferId;
+    private Transfer transfer;
 }
