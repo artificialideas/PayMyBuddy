@@ -37,4 +37,14 @@ public class BankAccount {
             unique = true,
             nullable = false)
     private User owner;
+
+    /**
+     *  Helper methods
+     **/
+    public User getUser() {
+        return owner;
+    }
+    public void setUser(User owner) {
+        this.owner = owner;
+    }
 }

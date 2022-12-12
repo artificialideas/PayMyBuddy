@@ -41,4 +41,14 @@ public class ExternalTransfer {
             unique = true,
             nullable = false)
     private Transfer transfer;
+
+    /**
+     *  Helper methods
+     **/
+    public Transfer getTransfer() {
+        return transfer;
+    }
+    public void setTransfer(Transfer transfer) {
+        this.transfer = transfer;
+    }
 }

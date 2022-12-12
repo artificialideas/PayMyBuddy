@@ -54,4 +54,32 @@ abstract class Transfer {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private List<ExternalTransfer> externalTransfers = new ArrayList<>();
+
+    /**
+     *  Helper methods
+     **/
+    public User getUser() {
+        return emitter;
+    }
+    public void setUser(User emitter) {
+        this.emitter = emitter;
+    }
+
+    public void addInternalTransfer(InternalTransfer internalTransfer) {
+        internalTransfers.add(internalTransfer);
+        internalTransfer.setTransfer(this);
+    }
+    public void removeInternalTransfer(InternalTransfer internalTransfer) {
+        internalTransfers.remove(internalTransfer);
+        internalTransfer.setTransfer(null);
+    }
+
+    public void addExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.add(externalTransfer);
+        externalTransfer.setTransfer(this);
+    }
+    public void removeExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.remove(externalTransfer);
+        externalTransfer.setTransfer(null);
+    }
 }
