@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -38,6 +42,13 @@ public class BankAccount {
             nullable = false)
     private User owner;
 
+    @OneToMany(
+            mappedBy = "bankAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<ExternalTransfer> externalTransfers = new ArrayList<>();
+
     /**
      *  Helper methods
      **/
@@ -47,4 +58,14 @@ public class BankAccount {
     public void setUser(User owner) {
         this.owner = owner;
     }
+
+    public void addExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.add(externalTransfer);
+        externalTransfer.setBankAccount(this);
+    }
+    public void removeExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.remove(externalTransfer);
+        externalTransfer.setBankAccount(null);
+    }
+
 }

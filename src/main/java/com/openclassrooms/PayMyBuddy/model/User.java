@@ -42,11 +42,7 @@ public class User {
     @Column(name = "savings", nullable = false)
     private BigDecimal savings;
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE},
-            fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name="Contacts",
         joinColumns = @JoinColumn(
@@ -64,12 +60,19 @@ public class User {
             fetch = FetchType.LAZY)
     private List<BankAccount> bankAccounts = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "emitter",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
-    private List<Transfer> transfers = new ArrayList<>();
+//    @OneToMany(
+//            mappedBy = "emitter",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.EAGER)
+//    private List<InternalTransfer> internalTransfers = new ArrayList<>();
+//
+//    @OneToMany(
+//            mappedBy = "emitter",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.EAGER)
+//    private List<ExternalTransfer> externalTransfers = new ArrayList<>();
 
     /**
      *  Helper methods
@@ -90,14 +93,5 @@ public class User {
     public void removeBankAccount(BankAccount bankAccount) {
         bankAccounts.remove(bankAccount);
         bankAccount.setUser(null);
-    }
-
-    public void addTransfer(Transfer transfer) {
-        transfers.add(transfer);
-        transfer.setUser(this);
-    }
-    public void removeTransfer(Transfer transfer) {
-        transfers.remove(transfer);
-        transfer.setUser(null);
     }
 }
