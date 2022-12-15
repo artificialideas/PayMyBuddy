@@ -32,6 +32,7 @@ public class InternalTransfer extends Transfer {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> receiver */
     public User getUser() {
         return receiver;
     }

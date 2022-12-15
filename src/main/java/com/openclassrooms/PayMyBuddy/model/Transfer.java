@@ -28,6 +28,7 @@ abstract class Transfer {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> emitter */
     public User getUser() {
         return emitter;
     }

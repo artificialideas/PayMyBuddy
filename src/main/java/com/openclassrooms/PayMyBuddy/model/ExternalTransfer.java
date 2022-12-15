@@ -32,6 +32,7 @@ public class ExternalTransfer extends Transfer {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> bankAccount */
     public BankAccount getBankAccount() {
         return bankAccount;
     }

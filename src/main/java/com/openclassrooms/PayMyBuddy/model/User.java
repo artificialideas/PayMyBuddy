@@ -58,7 +58,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    private List<BankAccount> bankAccounts = new ArrayList<>();
+    List<BankAccount> bankAccounts = new ArrayList<>();
 
 //    @OneToMany(
 //            mappedBy = "emitter",
@@ -77,15 +77,29 @@ public class User {
     /**
      *  Helper methods
      **/
-    public void addContact(User user) {
-        contacts.add(user);
-        user.getContacts().add(this);
+    /* @ManyToMany -> contacts */
+    public List<User> getContacts() {
+        return contacts;
     }
-    public void removeContact(User user) {
-        contacts.remove(user);
-        user.getContacts().remove(this);
+    public void setContacts(List<User> contacts) {
+        this.contacts = contacts;
+    }
+    public void addContact(User contact) {
+        contacts.add(contact);
+        contact.getContacts().add(this);
+    }
+    public void removeContact(User contact) {
+        contacts.remove(contact);
+        contact.getContacts().remove(this);
     }
 
+    /* @OneToMany -> owner */
+    public List<BankAccount> getBankAccount() {
+        return bankAccounts;
+    }
+    public void setBankAccount(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
     public void addBankAccount(BankAccount bankAccount) {
         bankAccounts.add(bankAccount);
         bankAccount.setUser(this);

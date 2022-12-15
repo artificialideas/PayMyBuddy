@@ -52,6 +52,7 @@ public class BankAccount {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> owner */
     public User getUser() {
         return owner;
     }
@@ -59,6 +60,13 @@ public class BankAccount {
         this.owner = owner;
     }
 
+    /* @OneToMany -> bankAccount */
+    public List<ExternalTransfer> getExternalTransfer() {
+        return externalTransfers;
+    }
+    public void setExternalTransfer(List<ExternalTransfer> externalTransfers) {
+        this.externalTransfers = externalTransfers;
+    }
     public void addExternalTransfer(ExternalTransfer externalTransfer) {
         externalTransfers.add(externalTransfer);
         externalTransfer.setBankAccount(this);
@@ -67,5 +75,4 @@ public class BankAccount {
         externalTransfers.remove(externalTransfer);
         externalTransfer.setBankAccount(null);
     }
-
 }
