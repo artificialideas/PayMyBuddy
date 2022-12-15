@@ -9,4 +9,4 @@ MSSQL scripts:
 
 Generated Relational DB Schema diagram:
 
-![generated-dbSchemaDiagram](https://user-images.githubusercontent.com/73825553/207043431-fb40f8a8-97e8-4316-a0a2-c680965120f2.png)
+![generated-dbSchemaDiagram](https://user-images.githubusercontent.com/73825553/207828536-2a30c6ce-7437-42a4-8eb5-fd0dbe7b3761.png)
