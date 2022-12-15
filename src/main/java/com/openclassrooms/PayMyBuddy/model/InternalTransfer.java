@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +22,11 @@ public class InternalTransfer extends Transfer {
     @Column(name = "id_internal")
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE},
+            fetch = FetchType.EAGER)
     @JoinColumn(
             name = "id_receiver_user",
             referencedColumnName="id_user",

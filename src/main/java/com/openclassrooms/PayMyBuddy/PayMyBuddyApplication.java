@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -20,6 +21,7 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 	}
 
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		Optional<User> optUser = userService.findUserByID(1);
 		User userId1 = optUser.get();

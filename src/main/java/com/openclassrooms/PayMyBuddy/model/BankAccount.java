@@ -34,7 +34,9 @@ public class BankAccount {
     @Column(name = "swift", nullable = false)
     private String swift;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JoinColumn(
             name = "id_owner",
             referencedColumnName="id_user",

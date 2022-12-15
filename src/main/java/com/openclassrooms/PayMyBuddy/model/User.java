@@ -60,19 +60,23 @@ public class User {
             fetch = FetchType.LAZY)
     List<BankAccount> bankAccounts = new ArrayList<>();
 
-//    @OneToMany(
-//            mappedBy = "emitter",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.EAGER)
-//    private List<InternalTransfer> internalTransfers = new ArrayList<>();
-//
-//    @OneToMany(
-//            mappedBy = "emitter",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.EAGER)
-//    private List<ExternalTransfer> externalTransfers = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "emitter",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE},
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private List<InternalTransfer> internalTransfers = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "emitter",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE},
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private List<ExternalTransfer> externalTransfers = new ArrayList<>();
 
     /**
      *  Helper methods
@@ -107,5 +111,37 @@ public class User {
     public void removeBankAccount(BankAccount bankAccount) {
         bankAccounts.remove(bankAccount);
         bankAccount.setUser(null);
+    }
+
+    /* @OneToMany -> emitter (InternalTransfer) */
+    public List<InternalTransfer> getInternalTransfer() {
+        return internalTransfers;
+    }
+    public void setInternalTransfer(List<InternalTransfer> internalTransfers) {
+        this.internalTransfers = internalTransfers;
+    }
+    public void addInternalTransfer(InternalTransfer internalTransfer) {
+        internalTransfers.add(internalTransfer);
+        internalTransfer.setUser(this);
+    }
+    public void removeInternalTransfer(InternalTransfer internalTransfer) {
+        internalTransfers.remove(internalTransfer);
+        internalTransfer.setUser(null);
+    }
+
+    /* @OneToMany -> emitter (ExternalTransfer) */
+    public List<ExternalTransfer> getExternalTransfer() {
+        return externalTransfers;
+    }
+    public void setExternalTransfer(List<ExternalTransfer> externalTransfers) {
+        this.externalTransfers = externalTransfers;
+    }
+    public void addExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.add(externalTransfer);
+        externalTransfer.setUser(this);
+    }
+    public void removeExternalTransfer(ExternalTransfer externalTransfer) {
+        externalTransfers.remove(externalTransfer);
+        externalTransfer.setUser(null);
     }
 }
