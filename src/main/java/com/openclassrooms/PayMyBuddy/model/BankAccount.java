@@ -36,7 +36,7 @@ public class BankAccount {
 
     @ManyToOne(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinColumn(
             name = "id_owner",
             referencedColumnName="id_user",
@@ -48,17 +48,17 @@ public class BankAccount {
             mappedBy = "bankAccount",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<ExternalTransfer> externalTransfers = new ArrayList<>();
 
     /**
      *  Helper methods
      **/
     /* @ManyToOne -> owner */
-    public User getUser() {
+    public User getOwner() {
         return owner;
     }
-    public void setUser(User owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
@@ -71,10 +71,8 @@ public class BankAccount {
     }
     public void addExternalTransfer(ExternalTransfer externalTransfer) {
         externalTransfers.add(externalTransfer);
-        externalTransfer.setBankAccount(this);
     }
     public void removeExternalTransfer(ExternalTransfer externalTransfer) {
         externalTransfers.remove(externalTransfer);
-        externalTransfer.setBankAccount(null);
     }
 }

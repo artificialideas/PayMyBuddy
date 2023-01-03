@@ -57,7 +57,7 @@ public class User {
             mappedBy = "owner",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     List<BankAccount> bankAccounts = new ArrayList<>();
 
     @OneToMany(
@@ -90,11 +90,9 @@ public class User {
     }
     public void addContact(User contact) {
         contacts.add(contact);
-        contact.getContacts().add(this);
     }
     public void removeContact(User contact) {
         contacts.remove(contact);
-        contact.getContacts().remove(this);
     }
 
     /* @OneToMany -> owner */
@@ -106,11 +104,9 @@ public class User {
     }
     public void addBankAccount(BankAccount bankAccount) {
         bankAccounts.add(bankAccount);
-        bankAccount.setUser(this);
     }
     public void removeBankAccount(BankAccount bankAccount) {
         bankAccounts.remove(bankAccount);
-        bankAccount.setUser(null);
     }
 
     /* @OneToMany -> emitter (InternalTransfer) */
@@ -122,11 +118,9 @@ public class User {
     }
     public void addInternalTransfer(InternalTransfer internalTransfer) {
         internalTransfers.add(internalTransfer);
-        internalTransfer.setUser(this);
     }
     public void removeInternalTransfer(InternalTransfer internalTransfer) {
         internalTransfers.remove(internalTransfer);
-        internalTransfer.setUser(null);
     }
 
     /* @OneToMany -> emitter (ExternalTransfer) */
@@ -138,10 +132,8 @@ public class User {
     }
     public void addExternalTransfer(ExternalTransfer externalTransfer) {
         externalTransfers.add(externalTransfer);
-        externalTransfer.setUser(this);
     }
     public void removeExternalTransfer(ExternalTransfer externalTransfer) {
         externalTransfers.remove(externalTransfer);
-        externalTransfer.setUser(null);
     }
 }

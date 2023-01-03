@@ -12,21 +12,37 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "ExternalTransfers")
-public class ExternalTransfer extends Transfer {
+public class ExternalTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_external")
     private long id;
 
+    @Column(name = "emission_date", nullable = false)
+    private LocalDateTime date = LocalDateTime.now();
+
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "id_emitter_user",
+            referencedColumnName="id_user",
+            unique = true,
+            nullable = false)
+    private User emitter;
+
     @ManyToOne(
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinColumn(
             name = "id_receiver_bank",
             referencedColumnName="id_bank",
@@ -37,6 +53,14 @@ public class ExternalTransfer extends Transfer {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> emitter */
+    public User getEmitter() {
+        return emitter;
+    }
+    public void setEmitter(User emitter) {
+        this.emitter = emitter;
+    }
+
     /* @ManyToOne -> bankAccount */
     public BankAccount getBankAccount() {
         return bankAccount;

@@ -12,15 +12,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "InternalTransfers")
-public class InternalTransfer extends Transfer {
+public class InternalTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_internal")
     private long id;
+
+    @Column(name = "emission_date", nullable = false)
+    private LocalDateTime date = LocalDateTime.now();
+
+    @Column(name = "amount", nullable = false)
+    private BigDecimal amount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "id_emitter_user",
+            referencedColumnName="id_user",
+            unique = true,
+            nullable = false)
+    private User emitter;
 
     @ManyToOne(
             cascade = {
@@ -37,11 +53,19 @@ public class InternalTransfer extends Transfer {
     /**
      *  Helper methods
      **/
+    /* @ManyToOne -> emitter */
+    public User getEmitter() {
+        return emitter;
+    }
+    public void setEmitter(User emitter) {
+        this.emitter = emitter;
+    }
+
     /* @ManyToOne -> receiver */
-    public User getUser() {
+    public User getReceiver() {
         return receiver;
     }
-    public void setUser(User receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
 }
