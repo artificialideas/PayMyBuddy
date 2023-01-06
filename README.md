@@ -4,7 +4,7 @@
 ------------------------
 
 **ER model:**
-![P6 - ER Model](https://user-images.githubusercontent.com/73825553/211019137-f86ea648-0a57-4750-b989-dd9cd328c306.jpeg)
+![P6 - ER Model](https://user-images.githubusercontent.com/73825553/211024839-24273a69-61b0-449e-84e4-ed4dabe02ae0.jpeg)
 
 ------------------------
 
