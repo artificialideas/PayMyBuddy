@@ -1,5 +1,10 @@
 **UML Class diagram:**
-![P6 - UML Class diagram](https://user-images.githubusercontent.com/73825553/211013826-ad890d1f-41a9-43bc-9dcd-e468278fad59.jpeg)
+![P6 - UML Class diagram](https://user-images.githubusercontent.com/73825553/211019055-036980a6-da8c-48da-8385-6aeee2481cf0.jpeg)
+
+------------------------
+
+**ER model:**
+![P6 - ER Model](https://user-images.githubusercontent.com/73825553/211019137-f86ea648-0a57-4750-b989-dd9cd328c306.jpeg)
 
 ------------------------
 
