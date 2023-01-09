@@ -9,7 +9,7 @@ public interface UserService {
 
     Optional<User> findUserByID(long id);
 
-    void addUser();
+    /*void addUser();
 
-    void deleteAllData();
+    void deleteAllData();*/
 }

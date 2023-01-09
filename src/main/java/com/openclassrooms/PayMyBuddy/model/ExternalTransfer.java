@@ -5,12 +5,12 @@ import lombok.Data;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class ExternalTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_external")
+    @Column(name = "id_externaltrans")
     private long id;
 
     @Column(name = "emission_date", nullable = false)
@@ -30,7 +30,7 @@ public class ExternalTransfer {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(
             name = "id_emitter_user",
             referencedColumnName="id_user",
@@ -38,11 +38,7 @@ public class ExternalTransfer {
             nullable = false)
     private User emitter;
 
-    @ManyToOne(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE},
-            fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_receiver_bank",
             referencedColumnName="id_bank",
@@ -61,7 +57,7 @@ public class ExternalTransfer {
         this.emitter = emitter;
     }
 
-    /* @ManyToOne -> bankAccount */
+    /* @OneToOne -> bankAccount */
     public BankAccount getBankAccount() {
         return bankAccount;
     }

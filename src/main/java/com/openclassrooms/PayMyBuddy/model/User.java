@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "pass_word", nullable = false)
@@ -42,7 +42,7 @@ public class User {
     @Column(name = "savings", nullable = false)
     private BigDecimal savings;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
         name="Contacts",
         joinColumns = @JoinColumn(
@@ -56,8 +56,7 @@ public class User {
     @OneToMany(
             mappedBy = "owner",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            orphanRemoval = true)
     List<BankAccount> bankAccounts = new ArrayList<>();
 
     @OneToMany(
@@ -65,17 +64,21 @@ public class User {
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE},
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            orphanRemoval = true)
     private List<InternalTransfer> internalTransfers = new ArrayList<>();
+
+    @OneToOne(
+            mappedBy = "receiver",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private InternalTransfer internalTransfer;
 
     @OneToMany(
             mappedBy = "emitter",
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE},
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            orphanRemoval = true)
     private List<ExternalTransfer> externalTransfers = new ArrayList<>();
 
     /**
@@ -109,7 +112,7 @@ public class User {
         bankAccounts.remove(bankAccount);
     }
 
-    /* @OneToMany -> emitter (InternalTransfer) */
+    /* @OneToMany & @OneToOne -> emitter & receiver (InternalTransfer) */
     public List<InternalTransfer> getInternalTransfer() {
         return internalTransfers;
     }

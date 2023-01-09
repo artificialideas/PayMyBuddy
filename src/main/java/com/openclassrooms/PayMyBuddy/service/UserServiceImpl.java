@@ -1,6 +1,5 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserRepository UserRepository;
+    private com.openclassrooms.PayMyBuddy.dao.UserRepository UserRepository;
 
     @Override
     public Iterable<User> findAllUsers() {
@@ -22,7 +21,7 @@ public class UserServiceImpl implements UserService {
         return UserRepository.findById(id);
     }
 
-    @Override
+    /*@Override
     public void addUser() {
 //        ArrayList<User> newUser = new ArrayList<User>();
 //        newUser.add(new User("Lucknow", "Shubham"));
@@ -32,5 +31,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAllData() {
         UserRepository.deleteAll();
-    }
+    }*/
 }

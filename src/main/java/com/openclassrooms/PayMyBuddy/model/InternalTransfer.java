@@ -5,12 +5,12 @@ import lombok.Data;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class InternalTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_internal")
+    @Column(name = "id_internaltrans")
     private long id;
 
     @Column(name = "emission_date", nullable = false)
@@ -30,7 +30,7 @@ public class InternalTransfer {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(
             name = "id_emitter_user",
             referencedColumnName="id_user",
@@ -38,11 +38,7 @@ public class InternalTransfer {
             nullable = false)
     private User emitter;
 
-    @ManyToOne(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE},
-            fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_receiver_user",
             referencedColumnName="id_user",
@@ -61,7 +57,7 @@ public class InternalTransfer {
         this.emitter = emitter;
     }
 
-    /* @ManyToOne -> receiver */
+    /* @OneToOne -> receiver */
     public User getReceiver() {
         return receiver;
     }
