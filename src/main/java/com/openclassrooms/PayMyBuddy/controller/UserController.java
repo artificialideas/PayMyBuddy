@@ -8,21 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/findall")
+    @GetMapping("/")
     public Iterable<User> getAllUsers() {
         return userServiceImpl.findAllUsers();
     }
 
-    @GetMapping("/findbyid/{id}")
-    public Optional<User> getUserById(
+    @GetMapping("/{id}")
+    public User getUserById(
             @PathVariable long id) {
         return userServiceImpl.findUserByID(id);
     }

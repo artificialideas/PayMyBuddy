@@ -1,5 +1,6 @@
 package com.openclassrooms.PayMyBuddy.service;
 
+import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,27 +10,22 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private com.openclassrooms.PayMyBuddy.dao.UserRepository UserRepository;
+    private UserRepository userRepository;
 
     @Override
     public Iterable<User> findAllUsers() {
-        return UserRepository.findAll();
+        return userRepository.findAll();
     }
 
     @Override
-    public Optional<User> findUserByID(long id) {
-        return UserRepository.findById(id);
+    public User findUserByID(long id) {
+        Optional<User> optional = userRepository.findById(id);
+        User user = null;
+        if (optional.isPresent()) {
+            user = optional.get();
+        } else {
+            throw new RuntimeException("User not found for id : " + id);
+        }
+        return user;
     }
-
-    /*@Override
-    public void addUser() {
-//        ArrayList<User> newUser = new ArrayList<User>();
-//        newUser.add(new User("Lucknow", "Shubham"));
-//        UserRepository.saveAll(newUser);
-    }
-
-    @Override
-    public void deleteAllData() {
-        UserRepository.deleteAll();
-    }*/
 }
