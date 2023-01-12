@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-    //ArrayList<User> findAllUsers();
+    //List<User> findAllUsers();
 }

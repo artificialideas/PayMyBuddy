@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "BankAccounts")
 public class BankAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_bank")
     private long id;
 
@@ -63,10 +63,4 @@ public class BankAccount {
     public void setExternalTransfer(ExternalTransfer externalTransfer) {
         this.externalTransfer = externalTransfer;
     }
-    /*public void addExternalTransfer(ExternalTransfer externalTransfer) {
-        externalTransfer.add(externalTransfer);
-    }
-    public void removeExternalTransfer(ExternalTransfer externalTransfer) {
-        externalTransfer.remove(externalTransfer);
-    }*/
 }
