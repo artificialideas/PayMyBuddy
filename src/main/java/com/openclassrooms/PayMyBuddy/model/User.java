@@ -45,11 +45,9 @@ public class User {
     @JoinTable(
         name="Contacts",
         joinColumns = @JoinColumn(
-                name="id_user",
-                referencedColumnName = "id_user"),
+                name="id_user"),
         inverseJoinColumns = @JoinColumn(
-                name="id_friend",
-                referencedColumnName = "id_user"))
+                name="id_friend"))
     private List<User> contacts = new ArrayList<>();
 
     @OneToMany(

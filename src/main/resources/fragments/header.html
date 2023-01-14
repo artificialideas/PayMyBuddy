@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="notSignedIn">
+    <nav class="navbar justify-content-between">
+        <h1>
+            <a class="navbar-brand" href="#" th:href="@{/}">Pay My Buddy</a>
+        </h1>
+    </nav>
+</header>
+
+<header th:fragment="signedIn">
+    <nav class="navbar justify-content-between">
+        <h1>
+            <a class="navbar-brand" href="#" th:href="@{/}">Pay My Buddy</a>
+        </h1>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a href="#" th:href="@{/}" title="Home">Home</a>
+            </li>
+            <li class="nav-item active" th:classappend="${module == 'Transfer' ? 'active' : ''}">
+                Transfer
+            </li>
+            <li class="nav-item">
+                <a href="#" th:href="@{/}" title="Profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" th:href="@{/}" title="Contact">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();" title="Log off">Log off</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<nav th:fragment="breadcrumb" aria-label="breadcrumb" class="row">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#" title="Home">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'Transfer' ? 'active' : ''}">
+            Transfer
+        </li>
+    </ol>
+</nav>
+</body>
+</html>

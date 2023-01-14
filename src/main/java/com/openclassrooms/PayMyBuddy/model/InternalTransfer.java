@@ -30,10 +30,12 @@ public class InternalTransfer {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(
             name = "id_emitter_user",
-            referencedColumnName="id_user",
             unique = true,
             nullable = false)
     private User emitter;
@@ -41,7 +43,6 @@ public class InternalTransfer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_receiver_user",
-            referencedColumnName="id_user",
             unique = true,
             nullable = false)
     private User receiver;

@@ -30,10 +30,12 @@ public class ExternalTransfer {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
+    @Column(name = "text_description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(
             name = "id_emitter_user",
-            referencedColumnName="id_user",
             unique = true,
             nullable = false)
     private User emitter;
@@ -41,7 +43,6 @@ public class ExternalTransfer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_receiver_bank",
-            referencedColumnName="id_bank",
             unique = true,
             nullable = false)
     private BankAccount bankAccount;

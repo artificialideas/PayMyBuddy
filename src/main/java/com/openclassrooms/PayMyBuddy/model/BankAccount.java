@@ -34,7 +34,6 @@ public class BankAccount {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "id_owner",
-            referencedColumnName="id_user",
             unique = true,
             nullable = false)
     private User owner;
