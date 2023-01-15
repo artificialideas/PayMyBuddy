@@ -1,1 +1,46 @@
-body {}
+html, body {
+    height: 100%;
+}
+.px-6 { padding: .375rem 3rem; }
+
+/* Pay My Buddy brand */
+.navbar-brand span,
+.navbar-brand a {
+  border:1px solid #77a809;
+  color:#fff;
+  border-radius:6px;
+  box-shadow: 0px 1px 0px 0px #f0f7fa;
+  text-shadow: 0px -1px 0px #5b6178;
+  background:linear-gradient(#89c403, #77a809);
+  padding: .5em 1em;
+  margin: .5em;
+}
+.navbar-brand a:hover {
+    text-decoration: none;
+  background: linear-gradient(#77a809, #89c403);
+}
+
+/* Custom styles */
+/* -- Header */
+.login-header { margin-bottom: 2em; }
+.logged-header .navbar-brand a { margin: 0; }
+.breadcrumb { border-radius: 0; }
+
+/* -- Menu */
+.main-menu li { margin: 0 .5em; }
+.main-menu a { color: #212529; }
+.main-menu li.active { color: #007bff; }
+
+/* -- Forms */
+/* ---- Login */
+.login-form .input-group-text { background: none; }
+.login-form .form-control { border-left: 0; }
+/* ---- Transfer */
+.transfer-form { background: #e9ecef; }
+.btn-secondary { background: #28a745; }
+
+/* -- Tables */
+.table thead {
+    background: #28a745;
+    color: #fff;
+}

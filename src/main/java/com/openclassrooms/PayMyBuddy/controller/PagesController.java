@@ -10,7 +10,12 @@ public class PagesController {
 
     @GetMapping("/")
     String index(Model model) {
-        model.addAttribute("user", user);
         return "login";
+    }
+
+    @GetMapping("/transfer")
+    String transfer(Model model) {
+        model.addAttribute("user", user);
+        return "transfer";
     }
 }
