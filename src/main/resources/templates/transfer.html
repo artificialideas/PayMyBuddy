@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <!--<header th:replace="../fragments/header :: signedIn"></header>-->
+    <!--<header th:replace="header :: signedIn"></header>-->
     <header class="logged-header">
         <nav class="navbar justify-content-between px-0">
             <h1 class="navbar-brand m-0">
@@ -37,7 +37,7 @@
     </header>
 
     <main>
-        <!--<div th:replace="../fragments/header :: breadcrumb"></div>-->
+        <!--<div th:replace="header :: breadcrumb"></div>-->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -60,8 +60,8 @@
                         <label for="selectConnection" hidden>Select a connection</label>
                         <select class="form-control" id="selectConnection">
                             <option>Select a connection</option>
-                            <option th:each="user : ${user}">
-                                <span th:text="${user.friend.firstName}">Friend</span>
+                            <option th:each="contact : ${contact}">
+                                <span th:text="${contact.firstName} + ' ' + ${contact.lastName}">Friend</span>
                             </option>
                         </select>
                     </div>
@@ -86,11 +86,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="user : ${user}">
+                        <!--<tr th:each="user : ${user}">
                             <td th:text="${user.internalTransfer.receiver.firstName}">First name</td>
                             <td th:text="${user.internalTransfer.description}">Description</td>
                             <td th:text="${user.internalTransfer.amount}">Amount</td>
-                        </tr>
+                        </tr>-->
                     </tbody>
                 </table>
             </section>
