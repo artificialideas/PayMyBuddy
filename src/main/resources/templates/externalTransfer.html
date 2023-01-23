@@ -10,18 +10,15 @@
 </head>
 <body>
 <div class="container">
-    <!--<header th:replace="header :: signedIn"></header>-->
     <header class="logged-header">
         <nav class="navbar justify-content-between px-0">
-            <h1 class="navbar-brand m-0">
-                <a href="#" th:href="@{/}">Pay My Buddy</a>
-            </h1>
+            <a class="navbar-brand m-0" href="#" th:href="@{/}">Pay My Buddy</a>
             <ul class="nav main-menu justify-content-end">
                 <li class="nav-item">
                     <a href="#" th:href="@{/}" title="Home">Home</a>
                 </li>
                 <li class="nav-item active" th:classappend="${module == 'Transfer' ? 'active' : ''}">
-                    Transfer
+                    Transfers
                 </li>
                 <li class="nav-item">
                     <a href="#" th:href="@{/}" title="Profile">Profile</a>
@@ -37,31 +34,34 @@
     </header>
 
     <main>
-        <!--<div th:replace="header :: breadcrumb"></div>-->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="#" title="Home">Home</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'Transfer' ? 'active' : ''}">
-                    Transfer
+                <li class="breadcrumb-item">
+                    <a href="#" title="Transfers">Transfers</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+                    External transfers
                 </li>
             </ol>
         </nav>
 
         <div class="container w-75">
+            <h1 class="mb-4">External transfers</h1>
             <section class="mb-4">
                 <div class="row">
-                    <h2 class="col">Send Money</h2>
-                    <button type="button" class="btn btn-primary px-4">Add connection</button>
+                    <h2 class="col">Withdraw Money</h2>
+                    <button type="button" class="btn btn-primary px-4">Add bank account</button>
                 </div>
                 <form class="row transfer-form py-4 justify-content-center">
                     <div class="mr-2">
-                        <label for="selectConnection" hidden>Select a connection</label>
+                        <label for="selectConnection" hidden>Select an account</label>
                         <select class="form-control" id="selectConnection">
-                            <option>Select a connection</option>
-                            <option th:each="contact : ${contact}">
-                                <span th:text="${contact.firstName} + ' ' + ${contact.lastName}">Friend</span>
+                            <option>Select an account</option>
+                            <option th:each="bank : ${bank}">
+                                <span th:text="${bank.iban}">Iban</span>
                             </option>
                         </select>
                     </div>
@@ -70,27 +70,27 @@
                         <input type="number" class="form-control" id="amountNumber" placeholder="0€">
                     </div>
                     <div class="ml-2">
-                        <button type="submit" class="btn btn-secondary px-6">Pay</button>
+                        <button type="submit" class="btn btn-secondary px-6">Withdraw</button>
                     </div>
                 </form>
             </section>
 
             <section>
-                <h2>My transactions</h2>
+                <h2>My external transactions</h2>
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Connections</th>
+                            <th scope="col">Bank account</th>
                             <th scope="col">Description</th>
                             <th scope="col">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!--<tr th:each="user : ${user}">
-                            <td th:text="${user.internalTransfer.receiver.firstName}">First name</td>
-                            <td th:text="${user.internalTransfer.description}">Description</td>
-                            <td th:text="${user.internalTransfer.amount}">Amount</td>
-                        </tr>-->
+                        <tr th:each="externalTransfer : ${externalTransfer}">
+                            <td th:text="${externalTransfer.iban}">Iban</td>
+                            <td th:text="${externalTransfer.description}">Description</td>
+                            <td th:text="${externalTransfer.amount}">Amount</td>
+                        </tr>
                     </tbody>
                 </table>
             </section>

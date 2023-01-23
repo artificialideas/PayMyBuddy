@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
     Iterable<User> findAllUsers();
 
-    User findUserByID(long id);
+    User findUserByEmail(String email);
 
-    List<ContactDTO> findAllContactsByUserId(long id);
+    List<ContactDTO> findAllContactsByUserEmail(String email);
 }

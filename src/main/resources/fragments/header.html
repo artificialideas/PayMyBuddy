@@ -18,7 +18,7 @@
                 <a href="#" th:href="@{/}" title="Home">Home</a>
             </li>
             <li class="nav-item active" th:classappend="${module == 'Transfer' ? 'active' : ''}">
-                Transfer
+                Transfers
             </li>
             <li class="nav-item">
                 <a href="#" th:href="@{/}" title="Profile">Profile</a>
@@ -38,8 +38,11 @@
         <li class="breadcrumb-item">
             <a href="#" title="Home">Home</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'Transfer' ? 'active' : ''}">
-            Transfer
+        <li class="breadcrumb-item">
+            Transfers
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+            Internal transfers
         </li>
     </ol>
 </nav>

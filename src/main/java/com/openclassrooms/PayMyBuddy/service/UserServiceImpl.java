@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -15,27 +16,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final ContactDTO contactDTO = new ContactDTO();
-
     @Override
     public Iterable<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findUserByID(long id) {
-        Optional<User> optional = userRepository.findById(id);
+    public User findUserByEmail(String email) {
+        Optional<User> optional = userRepository.findByEmail(email);
         User user = null;
         if (optional.isPresent()) {
             user = optional.get();
         } else {
-            throw new RuntimeException("User not found for id : " + id);
+            throw new RuntimeException("User not found with email " + email);
         }
         return user;
     }
 
     @Override
-    public List<ContactDTO> findAllContactsByUserId(long id) {
+    public List<ContactDTO> findAllContactsByUserEmail(String email) {
         List<ContactDTO> contacts = new ArrayList<>();
 
         List<User> contactsCollection = userRepository
@@ -44,11 +43,11 @@ public class UserServiceImpl implements UserService {
                 .next()
                 .getContacts();
         for (User contactResource : contactsCollection) {
-            if (contactResource.getId() != id) {
+            if (!Objects.equals(contactResource.getEmail(), email)) {
                 ContactDTO contactDTO = new ContactDTO();
-                contactDTO.setId(contactResource.getId());
                 contactDTO.setFirstName(contactResource.getFirstName());
-                contactDTO.setLastName(contactDTO.getLastName());
+                contactDTO.setLastName(contactResource.getLastName());
+                contactDTO.setEmail(contactResource.getEmail());
                 contacts.add(contactDTO);
             }
         }
