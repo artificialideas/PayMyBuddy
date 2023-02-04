@@ -82,6 +82,14 @@ public class User {
     private List<ExternalTransfer> externalTransfers = new ArrayList<>();
 
     /**
+     * Class constructors
+     **/
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    /**
      *  Helper methods
      **/
     /* @ManyToMany -> contacts */

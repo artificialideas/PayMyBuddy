@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="../static/core.css" rel="stylesheet" media="screen" th:href="@{/static/core.css}">
+    <link href="../static/core.css" rel="stylesheet" media="screen" th:href="@{../static/core.css}">
 </head>
 <body>
 <div class="d-flex container h-100 justify-content-center align-items-center">
@@ -19,27 +19,28 @@
         </header>
 
         <main>
-            <form class="login-form" action="#" method="post" th:action="@{/authenticate}">
+            <form class="login-form" action="/login" th:action="@{/login}" method="post">
                 <div class="form-group">
-                    <label for="inputEmail" hidden>Email</label>
+                    <label for="email" hidden>Email</label>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
                                 <span class="material-icons">email</span>
                             </div>
                         </div>
-                        <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                     </div>
+                    <p th:if="${param.error}" class="error">Invalid user, password, or domain</p>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword" hidden>Password</label>
+                    <label for="password" hidden>Password</label>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
                                 <span class="material-icons">password</span>
                             </div>
                         </div>
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required autofocus>
                     </div>
                 </div>
                 <div class="form-check pb-4">
