@@ -9,5 +9,5 @@
 ------------------------
 
 **MSSQL scripts:**
-- Tables creation: [mssqlPMB_creation.docx](https://github.com/artificialideas/PayMyBuddy/files/10374670/mssqlPMB_creation.docx)
-- Mock data: [mssqlPMB_data.docx](https://github.com/artificialideas/PayMyBuddy/files/10374673/mssqlPMB_data.docx)
+- Tables creation: [mssqlPMB_creation.docx](https://github.com/artificialideas/PayMyBuddy/files/10669020/mssqlPMB_creation.docx)
+- Mock data: [mssqlPMB_data.docx](https://github.com/artificialideas/PayMyBuddy/files/10669017/mssqlPMB_data.docx)
