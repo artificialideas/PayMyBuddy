@@ -1,3 +1,4 @@
+/*
 package com.openclassrooms.PayMyBuddy.securityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // Authentification
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
+        */
+/*auth.jdbcAuthentication()
             .dataSource(dataSource)
             .usersByUsernameQuery("select email,password "
                     + "from users "
                     + "where email=?")
-            .passwordEncoder(new BCryptPasswordEncoder());
-        /*auth.inMemoryAuthentication()
+            .passwordEncoder(new BCryptPasswordEncoder());murphy1935@example.org*//*
+
+        auth.inMemoryAuthentication()
             .withUser("user@mail.com")
             .password(passwordEncoder().encode("password"))
-            .roles("USER");*/
+            .roles("USER");
     }
 
     // Password encoder
@@ -43,18 +46,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+            .antMatchers("/static/**", "/login")
+                .permitAll()
             .antMatchers("/user/**")
                 .hasRole("USER")
-            .antMatchers("/login*")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
             .and()
             .formLogin()
                 .loginPage("/login")
                     .permitAll()
                     .loginProcessingUrl("/login_auth")
-                    .defaultSuccessUrl("/homepage", true)
+                    .defaultSuccessUrl("/user/homepage", true)
                     .failureUrl("/login?error=true")
             .and()
             .logout()
@@ -62,3 +63,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID");
     }
 }
+*/

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -19,7 +19,8 @@
         </header>
 
         <main>
-            <form class="login-form" action="/login" th:action="@{/login}" method="post">
+            <form class="login-form" th:object="${loginForm}" th:action="@{/login}" method="post">
+                <p th:if="${error}" class="error">Email & Password Incorrect</p>
                 <div class="form-group">
                     <label for="email" hidden>Email</label>
                     <div class="input-group mb-2">
@@ -30,7 +31,6 @@
                         </div>
                         <input type="text" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                     </div>
-                    <p th:if="${param.error}" class="error">Invalid user, password, or domain</p>
                 </div>
                 <div class="form-group">
                     <label for="password" hidden>Password</label>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="form-check pb-4">
-                    <input type="checkbox" name="_spring_security_remember_me" />
+                    <input type="checkbox" name="_spring_security_remember_me">
                     <label>Remember me</label>
                 </div>
                 <button type="submit" class="btn btn-primary w-50">Login</button>

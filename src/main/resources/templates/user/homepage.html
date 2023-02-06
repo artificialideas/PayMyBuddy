@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>PayMyBuddy</title>
+    <title>Pay My Buddy</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -46,17 +46,17 @@
                     <a href="#" th:href="@{/}" title="Contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <form action="/logout" th:action="@{/logout}" method="post">
+                    <!--<form action="/logout" th:action="@{/logout}" method="post">
                         <button class="btn btn-sm btn-primary btn-block" type="submit">Logout</button>
-                    </form>
+                    </form>--><p th:text="${email}"></p>
                 </li>
             </ul>
         </nav>
     </header>
-    <div class="logout float-right" th:fragment="logout" sec:authorize="isAuthenticated()">
-        <p>Logged in: <span sec:authentication="name"></span>
-    </div>
-    Home page!
+    <!--<div class="logout float-right" th:fragment="logout" sec:authorize="isAuthenticated()">
+        <p th:text="${email}"></p>
+    </div>-->
+    Home page! <p th:text="${email}"></p>
 </div>
 </body>
 </html>

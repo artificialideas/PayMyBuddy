@@ -1,20 +1,16 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.dto.LoginDTO;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Optional;
 
 @Controller
 public class PagesController {
@@ -35,42 +31,42 @@ public class PagesController {
         this.externalTransferService = externalTransferService;
     }
 
-    @RequestMapping("/")
-    public String root() {
-        return "redirect:/homepage";
-    }
-
-    @RequestMapping("/login")
-    public String login() {
+    @GetMapping("/login")
+    public String showLogin() {
         return "login";
     }
-
-    private Optional<String> getEmail() {
-        Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
-        String email = null;
-        if (auth != null && !auth.getClass().equals(AnonymousAuthenticationToken.class)) {
-            User user = (User) auth.getPrincipal();
-            email = user.getEmail();
+    //Check for Credentials
+    @PostMapping("/login")
+    public String login(
+            @ModelAttribute(name="loginForm") LoginDTO login,
+            Model model) {
+        String email = login.getEmail();
+        String pass = login.getPassword();
+        if(email.equals("user@mail.com") && pass.equals("pass")) {
+            model.addAttribute("email", email);
+            model.addAttribute("password", pass);
+            return "user/homepage";
         }
-        return Optional.ofNullable(email);
+        model.addAttribute("error", "Incorrect Username & Password");
+        return "login";
+
     }
 
-    @RequestMapping("/homepage")
+    /*@RequestMapping("/homepage")
     public String index(Model model) {
         getEmail().ifPresent(d -> {
-            model.addAttribute("email", d);
+            model.addAttribute("email", userService.findUserByEmail(getEmail().toString()));
         });
-        return "index";
+        return "redirect:/user/homepage";
     }
 
-    @RequestMapping("/user/homepage")
+    @RequestMapping(value = "email", method = RequestMethod.GET)
     public String userIndex(Model model) {
         getEmail().ifPresent(d -> {
-            model.addAttribute("email", d);
+            model.addAttribute("email", userService.findUserByEmail(getEmail().toString()));
         });
         return "user/homepage";
-    }
+    }*/
 
     @GetMapping("/user/internalTransfer")
     String internalTransfer(
