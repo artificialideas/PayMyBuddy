@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,13 +22,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        Optional<User> optional = userRepository.findByEmail(email);
-        User user = null;
-        if (optional.isPresent()) {
-            user = optional.get();
-        } else {
+        User user = userRepository.findByEmail(email);
+        if (user.getEmail() == null) {
             throw new RuntimeException("User not found with email " + email);
         }
+
         return user;
     }
 

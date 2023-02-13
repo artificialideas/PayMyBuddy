@@ -1,15 +1,15 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.dto.LoginDTO;
+import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -31,46 +31,29 @@ public class PagesController {
         this.externalTransferService = externalTransferService;
     }
 
-    @GetMapping("/login")
-    public String showLogin() {
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/login";
+    }
+
+    @RequestMapping("/login")
+    public String login() {
         return "login";
     }
-    //Check for Credentials
-    @PostMapping("/login")
-    public String login(
-            @ModelAttribute(name="loginForm") LoginDTO login,
-            Model model) {
-        String email = login.getEmail();
-        String pass = login.getPassword();
-        if(email.equals("user@mail.com") && pass.equals("pass")) {
-            model.addAttribute("email", email);
-            model.addAttribute("password", pass);
-            return "user/homepage";
-        }
-        model.addAttribute("error", "Incorrect Username & Password");
-        return "login";
 
+    @RequestMapping("/user/index")
+    public String userIndex(Authentication authentication, Model model) {
+        String email = authentication.getName();
+
+        User user = userService.findUserByEmail(email);
+        //model.addAttribute("user", user.getFirstName());
+
+        return "user/index";
     }
-
-    /*@RequestMapping("/homepage")
-    public String index(Model model) {
-        getEmail().ifPresent(d -> {
-            model.addAttribute("email", userService.findUserByEmail(getEmail().toString()));
-        });
-        return "redirect:/user/homepage";
-    }
-
-    @RequestMapping(value = "email", method = RequestMethod.GET)
-    public String userIndex(Model model) {
-        getEmail().ifPresent(d -> {
-            model.addAttribute("email", userService.findUserByEmail(getEmail().toString()));
-        });
-        return "user/homepage";
-    }*/
 
     @GetMapping("/user/internalTransfer")
-    String internalTransfer(
-            @RequestParam(value = "email", required = true) String email, Model model) {
+    String internalTransfer(Authentication authentication, Model model) {
+        String email = authentication.getName();
         /*List<ContactDTO> friends = userService.findAllContactsByUserEmail(email);
         List<InternalTransactionDTO> receivers = internalTransferService.findInternalTransactionByUserEmail(email)
                 .stream()

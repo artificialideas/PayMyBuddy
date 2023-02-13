@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -6,12 +6,11 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="../static/core.css" rel="stylesheet" media="screen" th:href="@{../static/core.css}">
+    <link rel="stylesheet" media="screen" th:href="@{/css/core.css}">
 </head>
 <body>
 <div class="d-flex container h-100 justify-content-center align-items-center">
     <div class="border rounded text-center p-4">
-        <!--<header th:replace="../fragments/header :: notSignedIn"></header>-->
         <header class="login-header">
             <nav class="navbar justify-content-center">
                 <span class="navbar-brand m-0">Pay My Buddy</span>
@@ -19,8 +18,17 @@
         </header>
 
         <main>
-            <form class="login-form" th:object="${loginForm}" th:action="@{/login}" method="post">
-                <p th:if="${error}" class="error">Email & Password Incorrect</p>
+            <form class="login-form" th:action="@{/login}" method="post">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        Invalid username or password.
+                    </div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-info">
+                        You have been logged out.
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="email" hidden>Email</label>
                     <div class="input-group mb-2">
@@ -29,7 +37,12 @@
                                 <span class="material-icons">email</span>
                             </div>
                         </div>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
+                        <input type="text"
+                               class="form-control"
+                               id="email"
+                               name="email"
+                               placeholder="Email"
+                               required autofocus>
                     </div>
                 </div>
                 <div class="form-group">
@@ -40,18 +53,27 @@
                                 <span class="material-icons">password</span>
                             </div>
                         </div>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required autofocus>
+                        <input type="password"
+                               class="form-control"
+                               id="password"
+                               name="password"
+                               placeholder="Password"
+                               required autofocus>
                     </div>
                 </div>
-                <div class="form-check pb-4">
-                    <input type="checkbox" name="_spring_security_remember_me">
+                <div class="form-check">
+                    <input type="checkbox" name="_spring_security_remember_me" />
                     <label>Remember me</label>
                 </div>
-                <button type="submit" class="btn btn-primary w-50">Login</button>
+                <div class="pb-4">
+                    <a th:href="@{/signin}">Doesn't have an account? <strong>Sign in</strong></a>
+                </div>
+                <button type="submit" class="btn btn-primary w-50 mt-4">Login</button>
             </form>
         </main>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
         crossorigin="anonymous"></script>

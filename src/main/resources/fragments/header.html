@@ -1,50 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<th:block th:fragment="header">
+    <header class="logged-header">
+        <nav class="navbar justify-content-between px-0">
+            <a class="navbar-brand m-0" th:href="@{/index}">Pay My Buddy</a>
+            <ul class="nav main-menu justify-content-end">
+                <li class="nav-item">
+                    <a th:href="@{/index}" title="Home">Home</a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <span class="dropdown-toggle dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                        Transfers
+                    </span>
+                    <div class="dropdown-menu">
+                        <a th:if="${module == 'internalTransfer'}"
+                           class="dropdown-item"
+                           th:href="@{/internalTransfer}"
+                           th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+                            Internal transfers
+                        </a>
+                        <span th:if="${module != 'internalTransfer'}"
+                              class="dropdown-item active">Internal transfers</span>
 
-<header th:fragment="notSignedIn" class="login-header">
-    <nav class="navbar justify-content-center">
-        <h1 class="navbar-brand m-0"><span>Pay My Buddy</span></h1>
-    </nav>
-</header>
-
-<header th:fragment="signedIn" class="logged-header">
-    <nav class="navbar justify-content-between px-0">
-        <h1 class="navbar-brand m-0">
-            <a href="#" th:href="@{/}">Pay My Buddy</a>
-        </h1>
-        <ul class="nav main-menu justify-content-end">
-            <li class="nav-item">
-                <a href="#" th:href="@{/}" title="Home">Home</a>
-            </li>
-            <li class="nav-item active" th:classappend="${module == 'Transfer' ? 'active' : ''}">
-                Transfers
-            </li>
-            <li class="nav-item">
-                <a href="#" th:href="@{/}" title="Profile">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" th:href="@{/}" title="Contact">Contact</a>
-            </li>
-            <li class="nav-item">
-                <a href="/logout" th:href="@{#}" onclick="$('#form').submit();" title="Log off">Log off</a>
-            </li>
-        </ul>
-    </nav>
-</header>
-
-<nav th:fragment="breadcrumb" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="#" title="Home">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            Transfers
-        </li>
-        <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
-            Internal transfers
-        </li>
-    </ol>
-</nav>
+                        <a th:if="${module == 'externalTransfer'}"
+                           class="dropdown-item"
+                           th:href="@{/externalTransfer}"
+                           th:classappend="${module == 'externalTransfer' ? 'active' : ''}">
+                            Internal transfers
+                        </a>
+                        <span th:if="${module != 'externalTransfer'}"
+                              class="dropdown-item active">
+                            External transfers
+                        </span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" th:href="@{/}" title="Profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" th:href="@{/}" title="Contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post">
+                        <button class="btn btn-sm btn-primary btn-block" type="submit">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</th:block>
 </body>
 </html>
