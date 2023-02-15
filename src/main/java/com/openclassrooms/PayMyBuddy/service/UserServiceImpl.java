@@ -13,7 +13,11 @@ import java.util.Objects;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Iterable<User> findAllUsers() {
@@ -22,7 +26,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        //User user = userRepository.findByEmail(email);
+        User user = new User();
+        Iterable<User> users = findAllUsers();
+        for (User u : users) {
+            if (Objects.equals(u.getEmail(), email)) {
+                user.setEmail(u.getEmail());
+                user.setFirstName(u.getFirstName());
+                user.setLastName(u.getLastName());
+                break;
+            }
+        }
+
         if (user.getEmail() == null) {
             throw new RuntimeException("User not found with email " + email);
         }

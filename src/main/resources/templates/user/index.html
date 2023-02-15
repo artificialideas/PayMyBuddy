@@ -10,7 +10,7 @@
     <!--<div class="logout float-right" th:fragment="logout" sec:authorize="isAuthenticated()">
         <p th:text="${email}"></p>
     </div>-->
-    Home page! <p th:text="${email}"></p>
+    Home page! <p th:text="${user.firstName} + ' ' +${user.lastName}"></p>
 </div>
 </body>
 </html>

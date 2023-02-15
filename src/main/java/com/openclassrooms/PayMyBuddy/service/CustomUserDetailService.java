@@ -1,6 +1,5 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,15 +13,15 @@ import java.util.HashSet;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public void CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void CustomUserDetailsService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = userService.findUserByEmail(email);
         HashSet<GrantedAuthority> authorities = new HashSet<GrantedAuthority>(1);
         authorities.add(new SimpleGrantedAuthority("USER"));
 

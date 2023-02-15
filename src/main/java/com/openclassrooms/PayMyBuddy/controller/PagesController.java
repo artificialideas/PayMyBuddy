@@ -46,7 +46,7 @@ public class PagesController {
         String email = authentication.getName();
 
         User user = userService.findUserByEmail(email);
-        //model.addAttribute("user", user.getFirstName());
+        model.addAttribute("user", user);
 
         return "user/index";
     }
