@@ -35,7 +35,6 @@ public class PagesController {
     public String root() {
         return "redirect:/login";
     }
-
     @RequestMapping("/login")
     public String login() {
         return "login";
@@ -51,8 +50,12 @@ public class PagesController {
         return "user/index";
     }
 
+    @RequestMapping("/internalTransfer")
+    public String internalTransfer() {
+        return "redirect:/user/internalTransfer";
+    }
     @GetMapping("/user/internalTransfer")
-    String internalTransfer(Authentication authentication, Model model) {
+    String userInternalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
         /*List<ContactDTO> friends = userService.findAllContactsByUserEmail(email);
         List<InternalTransactionDTO> receivers = internalTransferService.findInternalTransactionByUserEmail(email)

@@ -4,8 +4,7 @@ html, body {
 .px-6 { padding: .375rem 3rem; }
 
 /* Pay My Buddy brand */
-.navbar-brand span,
-.navbar-brand a {
+.navbar-brand {
   border:1px solid #77a809;
   color:#fff;
   border-radius:6px;
