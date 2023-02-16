@@ -25,8 +25,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByEmailAndPassword(String email) {
+        User user = new User();
+        Iterable<User> users = findAllUsers();
+        for (User u : users) {
+            if (Objects.equals(u.getEmail(), email)) {
+                user.setEmail(u.getEmail());
+                user.setPassword(u.getPassword());
+                break;
+            }
+        }
+
+        if (user.getEmail() == null) {
+            throw new RuntimeException("User not found with email " + email);
+        }
+
+        return user;
+    }
+
+    @Override
     public User findUserByEmail(String email) {
-        //User user = userRepository.findByEmail(email);
         User user = new User();
         Iterable<User> users = findAllUsers();
         for (User u : users) {
