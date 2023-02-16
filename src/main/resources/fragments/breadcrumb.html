@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/index}" title="Home">Home</a>
+            </li>
+            <li class="breadcrumb-item active"
+                aria-current="page"
+                th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+                Internal transfers
+            </li>
+        </ol>
+    </nav>
+</th:block>
+</body>
+</html>
