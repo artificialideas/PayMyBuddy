@@ -1,6 +1,7 @@
 package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     List<ContactDTO> findAllContactsByUserEmail(String email);
+
+    List<InternalTransfer> findInternalTransferByUserId(Long id);
 }

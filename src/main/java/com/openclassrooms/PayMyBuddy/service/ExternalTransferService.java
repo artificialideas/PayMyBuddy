@@ -1,9 +1,9 @@
 package com.openclassrooms.PayMyBuddy.service;
 
-import com.openclassrooms.PayMyBuddy.dto.ExternalTransactionDTO;
+import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
 
 import java.util.List;
 
 public interface ExternalTransferService {
-    List<ExternalTransactionDTO> findExternalTransactionByUserEmail(String email);
+    List<ExternalTransferDTO> findExternalTransactionByUserEmail(String email);
 }

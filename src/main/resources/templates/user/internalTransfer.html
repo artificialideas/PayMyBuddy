@@ -101,7 +101,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="internalTransfer : ${internalTransfer}">
-                            <td>First name</td>
+                            <td th:text="${internalTransfer.receiver.firstName} + ' ' + ${internalTransfer.receiver.lastName}">Full name</td>
                             <td th:text="${internalTransfer.description}">Description</td>
                             <td th:text="${internalTransfer.amount}">Amount</td>
                         </tr>

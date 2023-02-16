@@ -53,14 +53,10 @@ public class PagesController {
     @GetMapping("/user/internalTransfer")
     String userInternalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
-        /*List<ContactDTO> friends = userService.findAllContactsByUserEmail(email);
-        List<InternalTransactionDTO> receivers = internalTransferService.findInternalTransactionByUserEmail(email)
-                .stream()
-                .filter(receiver -> receiver.getReceiver())
-                .collect(Collectors.toList());*/
+        Long id = userService.findUserByEmail(email).getId();
 
         model.addAttribute("friend", userService.findAllContactsByUserEmail(email));
-        model.addAttribute("internalTransfer", internalTransferService.findInternalTransactionByUserEmail(email));
+        model.addAttribute("internalTransfer", internalTransferService.findInternalTransferByUserId(id));
         return "/user/internalTransfer";
     }
 

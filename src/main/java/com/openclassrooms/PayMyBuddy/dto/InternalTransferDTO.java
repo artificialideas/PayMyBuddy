@@ -3,11 +3,11 @@ package com.openclassrooms.PayMyBuddy.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
-public class InternalTransactionDTO {
-    private List<ContactDTO> receiver;
-    private String description;
+public class InternalTransferDTO {
+    private EmitterDTO emitter;
+    private ContactDTO receiver;
     private BigDecimal amount;
+    private String description;
 }

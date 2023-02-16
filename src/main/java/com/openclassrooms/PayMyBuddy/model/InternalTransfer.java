@@ -32,7 +32,7 @@ public class InternalTransfer {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "description")
+    @Column(name = "text_description")
     private String description;
 
     @ManyToOne

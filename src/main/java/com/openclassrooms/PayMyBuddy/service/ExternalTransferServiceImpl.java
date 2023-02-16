@@ -1,7 +1,7 @@
 package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dao.ExternalTransferRepository;
-import com.openclassrooms.PayMyBuddy.dto.ExternalTransactionDTO;
+import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
     private UserService userService;
 
     @Override
-    public List<ExternalTransactionDTO> findExternalTransactionByUserEmail(String email) {
-        List<ExternalTransactionDTO> externalTransactionDTOS = new ArrayList<>();
+    public List<ExternalTransferDTO> findExternalTransactionByUserEmail(String email) {
+        List<ExternalTransferDTO> externalTransactionDTOS = new ArrayList<>();
 
         User owner = userService.findUserByEmail(email);
         List<ExternalTransfer> externalTransferResource = new ArrayList<>(owner.getExternalTransfers());
@@ -30,7 +30,7 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
             String tmp = rawIban.substring(5);
             String maskedIban = rawIban.substring(0, 4) + tmp.replaceAll("\\w(?=\\w{4})", "*");
 
-            ExternalTransactionDTO externalTransactionDTO = new ExternalTransactionDTO();
+            ExternalTransferDTO externalTransactionDTO = new ExternalTransferDTO();
             externalTransactionDTO.setIban(maskedIban);
             externalTransactionDTO.setDescription(externalTransfer.getDescription());
             externalTransactionDTO.setAmount(externalTransfer.getAmount());

@@ -2,12 +2,12 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,9 +56,11 @@ public class UserServiceImpl implements UserService {
         Iterable<User> users = findAllUsers();
         for (User u : users) {
             if (Objects.equals(u.getEmail(), email)) {
-                user.setEmail(u.getEmail());
+                user.setId(u.getId());
                 user.setFirstName(u.getFirstName());
                 user.setLastName(u.getLastName());
+                user.setEmail(u.getEmail());
+                user.setContacts(u.getContacts());
                 break;
             }
         }
@@ -75,19 +77,21 @@ public class UserServiceImpl implements UserService {
         List<ContactDTO> contacts = new ArrayList<>();
         User user = findUserByEmail(email);
 
-
-
-
-        for (User contactResource : contactsCollection) {
-            if (!Objects.equals(contactResource.getEmail(), email)) {
-                ContactDTO contactDTO = new ContactDTO();
-                contactDTO.setFirstName(contactResource.getFirstName());
-                contactDTO.setLastName(contactResource.getLastName());
-                contactDTO.setEmail(contactResource.getEmail());
-                contacts.add(contactDTO);
-            }
+        for (User contact : user.getContacts()) {
+            ContactDTO contactDTO = new ContactDTO();
+                contactDTO.setEmail(contact.getEmail());
+                contactDTO.setFirstName(contact.getFirstName());
+                contactDTO.setLastName(contact.getLastName());
+            contacts.add(contactDTO);
         }
 
         return contacts;
+    }
+
+    @Override
+    public List<InternalTransfer> findInternalTransferByUserId(Long id) {
+        Optional<User> emitter = findUserById(id);
+
+        return emitter.map(User::getInternalTransfers).orElse(null);
     }
 }
