@@ -50,10 +50,6 @@ public class PagesController {
         return "user/index";
     }
 
-    @RequestMapping("/internalTransfer")
-    public String internalTransfer() {
-        return "redirect:/user/internalTransfer";
-    }
     @GetMapping("/user/internalTransfer")
     String userInternalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
@@ -65,7 +61,7 @@ public class PagesController {
 
         model.addAttribute("friend", userService.findAllContactsByUserEmail(email));
         model.addAttribute("internalTransfer", internalTransferService.findInternalTransactionByUserEmail(email));
-        return "internalTransfer";
+        return "/user/internalTransfer";
     }
 
     @GetMapping("/user/externalTransfer")
@@ -73,6 +69,6 @@ public class PagesController {
             @RequestParam(value = "email", required = true) String email, Model model) {
         model.addAttribute("bank", userService.findUserByEmail(email).getBankAccounts());
         model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserEmail(email));
-        return "externalTransfer";
+        return "/user/externalTransfer";
     }
 }

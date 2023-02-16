@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,6 +24,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Iterable<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -66,12 +73,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ContactDTO> findAllContactsByUserEmail(String email) {
         List<ContactDTO> contacts = new ArrayList<>();
+        User user = findUserByEmail(email);
 
-        List<User> contactsCollection = userRepository
-                .findAll()
-                .iterator()
-                .next()
-                .getContacts();
+
+
+
         for (User contactResource : contactsCollection) {
             if (!Objects.equals(contactResource.getEmail(), email)) {
                 ContactDTO contactDTO = new ContactDTO();

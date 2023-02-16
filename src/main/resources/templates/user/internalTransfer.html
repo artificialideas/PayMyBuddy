@@ -30,7 +30,7 @@
                     <div class="dropdown-menu">
                         <span class="dropdown-item active">Internal transfers</span>
                         <a class="dropdown-item"
-                           th:href="@{/externalTransfer}"
+                           th:href="@{/user/externalTransfer}"
                            th:classappend="${module == 'externalTransfer' ? 'active' : ''}">
                             Internal transfers
                         </a>
@@ -101,7 +101,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="internalTransfer : ${internalTransfer}">
-                            <td th:text="${internalTransfer.receiver.firstName}">First name</td>
+                            <td>First name</td>
                             <td th:text="${internalTransfer.description}">Description</td>
                             <td th:text="${internalTransfer.amount}">Amount</td>
                         </tr>
