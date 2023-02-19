@@ -18,7 +18,7 @@
             <a class="navbar-brand m-0" th:href="@{/index}">Pay My Buddy</a>
             <ul class="nav main-menu justify-content-end">
                 <li class="nav-item">
-                    <a th:href="@{/index}" title="Home">Home</a>
+                    <a th:href="@{/user/index}" title="Home">Home</a>
                 </li>
                 <li class="nav-item active dropdown">
                     <span class="dropdown-toggle dropdown-toggle"
@@ -32,7 +32,7 @@
                         <a class="dropdown-item"
                            th:href="@{/user/externalTransfer}"
                            th:classappend="${module == 'externalTransfer' ? 'active' : ''}">
-                            Internal transfers
+                            External transfers
                         </a>
                     </div>
                 </li>
@@ -54,7 +54,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="/homepage" th:href="@{/homepage}" title="Home">Home</a>
+                    <a th:href="@{/user/index}" title="Home">Home</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
                     Internal transfers
