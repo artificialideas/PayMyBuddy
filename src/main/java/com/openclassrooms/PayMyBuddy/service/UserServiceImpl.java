@@ -1,7 +1,9 @@
 package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dao.UserRepository;
+import com.openclassrooms.PayMyBuddy.dto.BankAccountDTO;
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,25 @@ public class UserServiceImpl implements UserService {
         }
 
         return contacts;
+    }
+
+    @Override
+    public List<BankAccountDTO> findBankAccountsByUserId(Long id) {
+        List<BankAccountDTO> bankAccountDTOs = new ArrayList<>();
+        Optional<User> owner = findUserById(id);
+        List<BankAccount> bankAccounts = owner.map(User::getBankAccounts).orElse(null);
+
+        assert bankAccounts != null;
+        for (BankAccount account : bankAccounts) {
+            BankAccountDTO bankAccountDTO = new BankAccountDTO();
+                bankAccountDTO.setEmail(owner.get().getEmail());
+                bankAccountDTO.setCredentials(account.getCredentials());
+                bankAccountDTO.setIban(account.getIban());
+                bankAccountDTO.setSwift(account.getSwift());
+            bankAccountDTOs.add(bankAccountDTO);
+        }
+
+        return bankAccountDTOs;
     }
 
     @Override

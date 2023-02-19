@@ -33,7 +33,7 @@ public class BankAccount {
     @Column(name = "swift", nullable = false)
     private String swift;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(
             name = "id_owner",
             unique = true,

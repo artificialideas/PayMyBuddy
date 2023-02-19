@@ -55,7 +55,9 @@ public class User {
 
     @OneToMany(
             mappedBy = "owner",
-            cascade = CascadeType.ALL,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE},
             orphanRemoval = true)
     private List<BankAccount> bankAccounts = new ArrayList<>();
 

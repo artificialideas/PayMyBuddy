@@ -15,7 +15,7 @@
 <div class="container">
     <header class="logged-header">
         <nav class="navbar justify-content-between px-0">
-            <a class="navbar-brand m-0" th:href="@{/index}">Pay My Buddy</a>
+            <a class="navbar-brand m-0" th:href="@{/user/index}">Pay My Buddy</a>
             <ul class="nav main-menu justify-content-end">
                 <li class="nav-item">
                     <a th:href="@{/user/index}" title="Home">Home</a>
@@ -56,7 +56,7 @@
                 <li class="breadcrumb-item">
                     <a th:href="@{/user/index}" title="Home">Home</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page" th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+                <li class="breadcrumb-item active" aria-current="page">
                     Internal transfers
                 </li>
             </ol>

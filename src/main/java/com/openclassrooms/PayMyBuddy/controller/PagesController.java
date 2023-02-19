@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PagesController {
@@ -61,9 +60,11 @@ public class PagesController {
     }
 
     @GetMapping("/user/externalTransfer")
-    String externalTransfer(
-            @RequestParam(value = "email", required = true) String email, Model model) {
-        model.addAttribute("bank", userService.findUserByEmail(email).getBankAccounts());
+    String externalTransfer(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        Long id = userService.findUserByEmail(email).getId();
+
+        model.addAttribute("bank", userService.findBankAccountsByUserId(id));
         model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserEmail(email));
         return "/user/externalTransfer";
     }
