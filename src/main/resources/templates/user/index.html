@@ -55,8 +55,49 @@
         </nav>
     </header>
     <main class="container w-75">
-        <h1 class="mb-4">Home</h1>
-        <h2 th:text="${user.firstName} + ' ' +${user.lastName}">User</h2>
+        <h1 class="visually-hidden">Pay My Buddy</h1>
+        <h2 class="mt-4 pb-2 border-bottom">
+            Welcome, <span th:text="${user.firstName} + ' ' +${user.lastName}">User</span>
+        </h2>
+
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0 mr-3">
+                    <span class="material-icons">redeem</span>
+                </div>
+                <div>
+                    <h3 class="fs-2">Send money to a friend</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum facilisis felis, eget consequat est porta ac.</p>
+                    <a th:href="@{/user/internalTransfer}" class="btn btn-primary">
+                        Go to internal transfers
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0 mr-3">
+                    <span class="material-icons">account_balance</span>
+                </div>
+                <div>
+                    <h3 class="fs-2">Withdraw your money</h3>
+                    <p>Sed nec pretium lectus, vitae ullamcorper arcu. Mauris tincidunt risus non urna rhoncus, quis pretium justo posuere.</p>
+                    <a th:href="@{/user/externalTransfer}" class="btn btn-primary">
+                        Go to external transfers
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+            <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0 mr-3">
+                <span class="material-icons">contacts</span>
+            </div>
+            <div>
+                <h3 class="fs-2">Add new friends</h3>
+                <p>Maecenas rhoncus, orci quis fringilla efficitur, urna nibh volutpat tortor, vel iaculis ex est at velit. Vivamus pellentesque ullamcorper justo non dignissim.</p>
+                <a th:href="@{/user/profile}" class="btn btn-primary">
+                    Go to your connexions
+                </a>
+            </div>
+        </div>
+        </div>
     </main>
 </div>
 

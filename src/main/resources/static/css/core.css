@@ -15,8 +15,9 @@ html, body {
     margin: .5em;
 }
 .navbar-brand:hover {
-    text-decoration: none;
+    color: #fff;
     background: linear-gradient(#77a809, #89c403);
+    text-decoration: none;
 }
 
 /* Custom styles */
@@ -24,6 +25,18 @@ html, body {
 .login-header { margin-bottom: 2em; }
 .logged-header .navbar-brand a { margin: 0; }
 .breadcrumb { border-radius: 0; }
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 
 /* -- Menu */
 .main-menu li { margin: 0 .5em; }
@@ -46,4 +59,15 @@ html, body {
 .table thead {
     background: #28a745;
     color: #fff;
+}
+
+/* -- Home */
+.icon-square {
+  border-radius: .75rem;
+  font-size: 1.5rem;
+  height: 3rem;
+  width: 3rem;
+}
+.text-bg-light {
+    background-color: RGBA(248,249,250,var(--bs-bg-opacity,1)) !important;
 }
