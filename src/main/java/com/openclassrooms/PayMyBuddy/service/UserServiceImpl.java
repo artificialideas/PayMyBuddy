@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
         assert bankAccounts != null;
         for (BankAccount account : bankAccounts) {
             BankAccountDTO bankAccountDTO = new BankAccountDTO();
+                bankAccountDTO.setId(account.getId());
                 bankAccountDTO.setEmail(owner.get().getEmail());
                 bankAccountDTO.setCredentials(account.getCredentials());
                 bankAccountDTO.setIban(account.getIban());

@@ -68,6 +68,147 @@
     <div class="container w-75">
       <h1 class="mb-4">Profile</h1>
       <h2 th:text="${user.firstName} + ' ' +${user.lastName}">User</h2>
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">
+            <span class="material-icons">person</span> Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="bank-tab" data-toggle="tab" href="#bank" role="tab" aria-controls="bank" aria-selected="false">
+            <span class="material-icons">account_balance</span> Bank accounts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="friends-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="friends" aria-selected="false">
+            <span class="material-icons">people_alt</span> Friends
+          </a>
+        </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content mt-3" id="v-pills-tabContent"> <!--show active-->
+        <div class="tab-pane show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <form>
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <div class="input-group mb-2">
+                <input type="text"
+                       class="form-control"
+                       id="firstName"
+                       name="firstName"
+                       th:value="${user.firstName}"
+                       required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <div class="input-group mb-2">
+                <input type="text"
+                       class="form-control"
+                       id="lastName"
+                       name="lastName"
+                       th:value="${user.lastName}"
+                       required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <div class="input-group mb-2">
+                <input type="text"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       placeholder="Email"
+                       th:value="${user.email}"
+                       required>
+              </div>
+            </div>
+            <div class="border border-secondary rounded p-3 mt-2">
+              <div class="form-group">
+                <label for="password">New password</label>
+                <div class="input-group mb-2">
+                  <input type="password"
+                         class="form-control"
+                         id="password"
+                         name="password"
+                         placeholder="Password"
+                         required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="passwordRe">Repeat password</label>
+                <div class="input-group mb-2">
+                  <input type="password"
+                         class="form-control"
+                         id="passwordRe"
+                         name="passwordRe"
+                         placeholder="Password"
+                         required>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit"
+                    id="profileButton"
+                    class="btn btn-primary mt-4">
+              Save changes
+            </button>
+          </form>
+        </div>
+        <div class="tab-pane" id="bank" role="tabpanel" aria-labelledby="profile-tab">
+          <h3>My bank accounts</h3>
+          <ul class="list-group list-group-flush">
+            <li th:each="bank : ${bank}" class="list-group-item d-flex justify-content-between align-items-center">
+              <p th:text="${bank.iban}">Iban</p>
+              <form th:action="@{/user/profile/deleteBankAccount/{id}(id=${bank.id})}" method="delete">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit"
+                        class="btn btn-link"
+                        id="bankDeleteButton">
+                  <span class="material-icons">delete</span>
+                </button>
+              </form>
+            </li>
+          </ul>
+
+          <h3>Add a new bank account</h3>
+          <form th:action="@{/user/profile/addBankAccount}" method="post">
+            <div class="form-group">
+              <label for="iban">Iban</label>
+              <input type="text"
+                     class="form-control"
+                     id="iban"
+                     name="iban"
+                     placeholder="FR XX XXXX XXXXXX XXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label for="swift">Swift</label>
+              <input type="text"
+                     class="form-control"
+                     id="swift"
+                     name="swift"
+                     placeholder="XXXX XX XX XXX">
+            </div>
+            <div class="form-group">
+              <label for="credentials">Credentials</label>
+              <input type="text"
+                     class="form-control"
+                     id="credentials"
+                     name="credentials"
+                     placeholder="Full name">
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    id="bankAddButton">
+              Add bank account
+            </button>
+          </form>
+        </div>
+        <div class="tab-pane" id="friends" role="tabpanel" aria-labelledby="profile-tab">...</div>
+      </div>
     </div>
   </main>
 </div>

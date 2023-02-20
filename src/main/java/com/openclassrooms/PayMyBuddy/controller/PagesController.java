@@ -1,20 +1,31 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
+import com.openclassrooms.PayMyBuddy.model.BankAccount;
+import com.openclassrooms.PayMyBuddy.service.BankAccountService;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user/")
 public class PagesController {
     private UserService userService;
+    private BankAccountService bankAccountService;
     private InternalTransferService internalTransferService;
     private ExternalTransferService externalTransferService;
 
@@ -59,6 +70,25 @@ public class PagesController {
         UserDetailsDTO user = userService.findUserByEmail(email);
 
         model.addAttribute("user", user);
+        model.addAttribute("bank", userService.findBankAccountsByUserId(user.getId()));
         return SECURED_URL + "/profile";
+    }
+    @PostMapping("/profile/addBankAccount")
+    public ResponseEntity<BankAccount> addBankAccount(
+            @RequestBody BankAccount newBankAccount) {
+
+        BankAccount bankAccount = bankAccountService.add(newBankAccount);
+        if (Objects.isNull(bankAccount)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
+        }
+    }
+    @DeleteMapping("/profile/deleteBankAccount")
+    public String deleteBankAccount(
+            @PathVariable String id) {
+System.out.println(id);
+        //bankAccountService.deleteById(id);
+        return "redirect:/profile";
     }
 }
