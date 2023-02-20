@@ -1,6 +1,6 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,7 @@ public class LoginController {
     @RequestMapping("/user/index")
     public String userIndex(Authentication authentication, Model model) {
         String email = authentication.getName();
-        User user = userService.findUserByEmail(email);
+        UserDetailsDTO user = userService.findUserByEmail(email);
 
         model.addAttribute("user", user);
         return SECURED_URL + "/index";

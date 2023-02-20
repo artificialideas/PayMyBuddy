@@ -1,5 +1,6 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
+import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    public User getUserByEmail(
+    public UserDetailsDTO getUserByEmail(
             @PathVariable String email) {
         return userServiceImpl.findUserByEmail(email);
     }

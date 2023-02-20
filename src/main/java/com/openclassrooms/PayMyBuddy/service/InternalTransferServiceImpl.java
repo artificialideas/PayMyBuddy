@@ -9,7 +9,10 @@ import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +36,7 @@ public class InternalTransferServiceImpl implements InternalTransferService {
     @Override
     public List<InternalTransferDTO> findInternalTransferByUserId(Long id) {
         List<InternalTransferDTO> allInternalTransfers = new ArrayList<>();
+        Currency currency = Currency.getInstance("EUR");
 
         // There is only one emitter
         Optional<User> emitter = userService.findUserById(id);
@@ -51,10 +55,13 @@ public class InternalTransferServiceImpl implements InternalTransferService {
                 receiverDTO.setEmail(receiver.map(User::getEmail).orElse(null));
 
             Optional<InternalTransfer> internalTransfer = findInternalTransferById(it.getId());
+            BigDecimal formattedAmount = internalTransfer.map(InternalTransfer::getAmount).orElse(null);
+            assert formattedAmount != null;
+
             InternalTransferDTO internalTransferDTO = new InternalTransferDTO();
                 internalTransferDTO.setEmitter(emitterDTO);
                 internalTransferDTO.setReceiver(receiverDTO);
-                internalTransferDTO.setAmount(internalTransfer.map(InternalTransfer::getAmount).orElse(null));
+                internalTransferDTO.setAmount(formattedAmount.setScale(2, RoundingMode.HALF_EVEN) + currency.getSymbol());
                 internalTransferDTO.setDescription(internalTransfer.map(InternalTransfer::getDescription).orElse(null));
             allInternalTransfers.add(internalTransferDTO);
         }

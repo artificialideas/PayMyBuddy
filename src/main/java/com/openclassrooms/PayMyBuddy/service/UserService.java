@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dto.BankAccountDTO;
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
@@ -16,9 +17,9 @@ public interface UserService {
 
     User findUserByEmailAndPassword(String email);
 
-    User findUserByEmail(String email);
+    UserDetailsDTO findUserByEmail(String email);
 
-    List<ContactDTO> findAllContactsByUserEmail(String email);
+    List<ContactDTO> findContactsByUserEmail(String email);
 
     List<BankAccountDTO> findBankAccountsByUserId(Long id);
 

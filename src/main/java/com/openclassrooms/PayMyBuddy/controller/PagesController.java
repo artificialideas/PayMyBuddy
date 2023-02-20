@@ -1,6 +1,6 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
-import com.openclassrooms.PayMyBuddy.model.User;
+import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
@@ -38,7 +38,7 @@ public class PagesController {
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 
-        model.addAttribute("friend", userService.findAllContactsByUserEmail(email));
+        model.addAttribute("friend", userService.findContactsByUserEmail(email));
         model.addAttribute("internalTransfer", internalTransferService.findInternalTransferByUserId(id));
         return  SECURED_URL + "/internalTransfer";
     }
@@ -56,7 +56,7 @@ public class PagesController {
     @GetMapping("/profile")
     String profile(Authentication authentication, Model model) {
         String email = authentication.getName();
-        User user = userService.findUserByEmail(email);
+        UserDetailsDTO user = userService.findUserByEmail(email);
 
         model.addAttribute("user", user);
         return SECURED_URL + "/profile";

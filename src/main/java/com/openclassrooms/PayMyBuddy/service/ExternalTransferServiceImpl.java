@@ -8,7 +8,9 @@ import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
     @Override
     public List<ExternalTransferDTO> findExternalTransactionByUserId(Long id) {
         List<ExternalTransferDTO> allExternalTransfers = new ArrayList<>();
+        Currency currency = Currency.getInstance("EUR");
 
         // There is only one emitter
         Optional<User> emitter = userService.findUserById(id);
@@ -50,7 +53,7 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
             ExternalTransferDTO externalTransactionDTO = new ExternalTransferDTO();
                 externalTransactionDTO.setIban(maskedIban);
                 externalTransactionDTO.setDescription(et.getDescription());
-                externalTransactionDTO.setAmount(et.getAmount());
+            externalTransactionDTO.setAmount(et.getAmount().setScale(2, RoundingMode.HALF_EVEN) + currency.getSymbol());
             allExternalTransfers.add(externalTransactionDTO);
         }
 

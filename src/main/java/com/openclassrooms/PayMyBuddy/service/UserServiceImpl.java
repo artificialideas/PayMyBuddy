@@ -3,6 +3,7 @@ package com.openclassrooms.PayMyBuddy.service;
 import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.dto.BankAccountDTO;
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
@@ -54,41 +55,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        User user = new User();
+    public UserDetailsDTO findUserByEmail(String email) {
+        UserDetailsDTO userDetailsDTO = new UserDetailsDTO();
+        List<ContactDTO> contacts = new ArrayList<>();
+
         Iterable<User> users = findAllUsers();
         for (User u : users) {
             if (Objects.equals(u.getEmail(), email)) {
-                user.setId(u.getId());
-                user.setFirstName(u.getFirstName());
-                user.setLastName(u.getLastName());
-                user.setEmail(u.getEmail());
-                user.setContacts(u.getContacts());
+                for (User contact : u.getContacts()) {
+                    ContactDTO contactDTO = new ContactDTO();
+                        contactDTO.setEmail(contact.getEmail());
+                        contactDTO.setFirstName(contact.getFirstName());
+                        contactDTO.setLastName(contact.getLastName());
+                    contacts.add(contactDTO);
+                }
+
+                userDetailsDTO.setId(u.getId());
+                userDetailsDTO.setFirstName(u.getFirstName());
+                userDetailsDTO.setLastName(u.getLastName());
+                userDetailsDTO.setEmail(u.getEmail());
+                userDetailsDTO.setContacts(contacts);
                 break;
             }
         }
 
-        if (user.getEmail() == null) {
+        if (userDetailsDTO.getEmail() == null) {
             throw new RuntimeException("User not found with email " + email);
         }
 
-        return user;
+        return userDetailsDTO;
     }
 
     @Override
-    public List<ContactDTO> findAllContactsByUserEmail(String email) {
-        List<ContactDTO> contacts = new ArrayList<>();
-        User user = findUserByEmail(email);
+    public List<ContactDTO> findContactsByUserEmail(String email) {
+        UserDetailsDTO user = findUserByEmail(email);
 
-        for (User contact : user.getContacts()) {
-            ContactDTO contactDTO = new ContactDTO();
-                contactDTO.setEmail(contact.getEmail());
-                contactDTO.setFirstName(contact.getFirstName());
-                contactDTO.setLastName(contact.getLastName());
-            contacts.add(contactDTO);
-        }
-
-        return contacts;
+        return new ArrayList<>(user.getContacts());
     }
 
     @Override
