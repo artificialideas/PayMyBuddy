@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/user/")
 public class PagesController {
     private UserService userService;
     private InternalTransferService internalTransferService;
     private ExternalTransferService externalTransferService;
+
+    private final String SECURED_URL = "user";
 
     @Autowired
     public void UserController(UserService userService) {
@@ -30,42 +33,32 @@ public class PagesController {
         this.externalTransferService = externalTransferService;
     }
 
-    @RequestMapping("/")
-    public String root() {
-        return "redirect:/login";
-    }
-    @RequestMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @RequestMapping("/user/index")
-    public String userIndex(Authentication authentication, Model model) {
-        String email = authentication.getName();
-
-        User user = userService.findUserByEmail(email);
-        model.addAttribute("user", user);
-
-        return "user/index";
-    }
-
-    @GetMapping("/user/internalTransfer")
-    String userInternalTransfer(Authentication authentication, Model model) {
+    @GetMapping("/internalTransfer")
+    String internalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 
         model.addAttribute("friend", userService.findAllContactsByUserEmail(email));
         model.addAttribute("internalTransfer", internalTransferService.findInternalTransferByUserId(id));
-        return "/user/internalTransfer";
+        return  SECURED_URL + "/internalTransfer";
     }
 
-    @GetMapping("/user/externalTransfer")
+    @GetMapping("/externalTransfer")
     String externalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 
         model.addAttribute("bank", userService.findBankAccountsByUserId(id));
         model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserId(id));
-        return "/user/externalTransfer";
+        return  SECURED_URL + "/externalTransfer";
+    }
+
+    @GetMapping("/profile")
+    String profile(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        User user = userService.findUserByEmail(email);
+
+        model.addAttribute("user", user);
+        return SECURED_URL + "/profile";
     }
 }

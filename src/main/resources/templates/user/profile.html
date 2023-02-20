@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Pay My Buddy - Profile</title>
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/core.css}">
+</head>
+<body>
+<div class="container">
+  <header class="logged-header">
+    <nav class="navbar justify-content-between px-0">
+      <a class="navbar-brand m-0" th:href="@{/user/index}">Pay My Buddy</a>
+      <ul class="nav main-menu justify-content-end">
+        <li class="nav-item">
+          <a th:href="@{/user/index}" title="Home">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <span class="dropdown-toggle dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                Transfers
+            </span>
+          <div class="dropdown-menu">
+            <a class="dropdown-item"
+               th:href="@{/user/internalTransfer}"
+               th:classappend="${module == 'internalTransfer' ? 'active' : ''}">
+              Internal transfers
+            </a>
+            <a class="dropdown-item"
+               th:href="@{/user/externalTransfer}"
+               th:classappend="${module == 'externalTransfer' ? 'active' : ''}">
+              External transfers
+            </a>
+          </div>
+        </li>
+        <li class="nav-item active">
+          Profile
+        </li>
+        <li class="nav-item">
+          <a th:href="@{/user/contact}" title="Contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <form th:action="@{/logout}" method="post">
+            <button class="btn btn-sm btn-primary btn-block" type="submit">Logout</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a th:href="@{/user/index}" title="Home">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Profile
+        </li>
+      </ol>
+    </nav>
+    <div class="container w-75">
+      <h1 class="mb-4">Profile</h1>
+      <h2 th:text="${user.firstName} + ' ' +${user.lastName}">User</h2>
+    </div>
+  </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.1/cjs/popper.min.js"
+        integrity="sha256-T3bYsIPyOLpEfeZOX4M7J59ZoDMzuYFUsPiSN3Xcc2M=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+</html>

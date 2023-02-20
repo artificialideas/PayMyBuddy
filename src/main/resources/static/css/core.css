@@ -29,7 +29,10 @@ html, body {
 .main-menu li { margin: 0 .5em; }
 .main-menu a { color: #212529; }
 .main-menu li.active { color: #007bff; }
-.main-menu li.active .dropdown-toggle { cursor: pointer; }
+.main-menu li:hover .dropdown-toggle {
+    cursor: pointer;
+    text-decoration: underline;
+}
 
 /* -- Forms */
 /* ---- Login */
