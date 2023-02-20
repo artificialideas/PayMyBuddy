@@ -5,18 +5,18 @@ html, body {
 
 /* Pay My Buddy brand */
 .navbar-brand {
-  border:1px solid #77a809;
-  color:#fff;
-  border-radius:6px;
-  box-shadow: 0px 1px 0px 0px #f0f7fa;
-  text-shadow: 0px -1px 0px #5b6178;
-  background:linear-gradient(#89c403, #77a809);
-  padding: .5em 1em;
-  margin: .5em;
+    border:1px solid #77a809;
+    color:#fff;
+    border-radius:6px;
+    box-shadow: 0px 1px 0px 0px #f0f7fa;
+    text-shadow: 0px -1px 0px #5b6178;
+    background:linear-gradient(#89c403, #77a809);
+    padding: .5em 1em;
+    margin: .5em;
 }
-.navbar-brand a:hover {
+.navbar-brand:hover {
     text-decoration: none;
-  background: linear-gradient(#77a809, #89c403);
+    background: linear-gradient(#77a809, #89c403);
 }
 
 /* Custom styles */

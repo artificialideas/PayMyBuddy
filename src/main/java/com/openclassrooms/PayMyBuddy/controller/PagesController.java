@@ -65,7 +65,7 @@ public class PagesController {
         Long id = userService.findUserByEmail(email).getId();
 
         model.addAttribute("bank", userService.findBankAccountsByUserId(id));
-        model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserEmail(email));
+        model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserId(id));
         return "/user/externalTransfer";
     }
 }

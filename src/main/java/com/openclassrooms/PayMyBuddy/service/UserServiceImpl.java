@@ -4,6 +4,7 @@ import com.openclassrooms.PayMyBuddy.dao.UserRepository;
 import com.openclassrooms.PayMyBuddy.dto.BankAccountDTO;
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
+import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,5 +115,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> emitter = findUserById(id);
 
         return emitter.map(User::getInternalTransfers).orElse(null);
+    }
+
+    @Override
+    public List<ExternalTransfer> findExternalTransferByUserId(Long id) {
+        Optional<User> emitter = findUserById(id);
+
+        return emitter.map(User::getExternalTransfers).orElse(null);
     }
 }
