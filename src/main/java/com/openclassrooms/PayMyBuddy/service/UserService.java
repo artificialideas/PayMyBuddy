@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Iterable<User> findAllUsers();
+    Iterable<User> findAll();
 
-    Optional<User> findUserById(Long id);
+    Optional<User> findById(Long id);
 
     User findUserByEmailAndPassword(String email);
 

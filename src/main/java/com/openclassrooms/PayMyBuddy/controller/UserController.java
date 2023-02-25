@@ -17,7 +17,7 @@ public class UserController {
 
     @GetMapping("/")
     public Iterable<User> getAllUsers() {
-        return userServiceImpl.findAllUsers();
+        return userServiceImpl.findAll();
     }
 
     @GetMapping("/{email}")

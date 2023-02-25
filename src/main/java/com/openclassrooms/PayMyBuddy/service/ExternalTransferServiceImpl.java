@@ -37,7 +37,7 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
         Currency currency = Currency.getInstance("EUR");
 
         // There is only one emitter
-        Optional<User> emitter = userService.findUserById(id);
+        Optional<User> emitter = userService.findById(id);
         EmitterDTO emitterDTO = new EmitterDTO();
             emitterDTO.setId(emitter.map(User::getId).orElse(null));
             emitterDTO.setSavings(emitter.map(User::getSavings).orElse(null));

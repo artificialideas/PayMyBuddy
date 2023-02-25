@@ -7,42 +7,30 @@ import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Objects;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user/")
 public class PagesController {
-    private UserService userService;
-    private BankAccountService bankAccountService;
-    private InternalTransferService internalTransferService;
-    private ExternalTransferService externalTransferService;
-
     private final String SECURED_URL = "user";
 
     @Autowired
-    public void UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
     @Autowired
-    public void InternalTransferController(InternalTransferService internalTransferService) {
-        this.internalTransferService = internalTransferService;
-    }
+    private BankAccountService bankAccountService;
     @Autowired
-    public void ExternalTransferController(ExternalTransferService externalTransferService) {
-        this.externalTransferService = externalTransferService;
-    }
+    private InternalTransferService internalTransferService;
+    @Autowired
+    private ExternalTransferService externalTransferService;
 
     @GetMapping("/internalTransfer")
     String internalTransfer(Authentication authentication, Model model) {
@@ -74,21 +62,29 @@ public class PagesController {
         return SECURED_URL + "/profile";
     }
     @PostMapping("/profile/addBankAccount")
-    public ResponseEntity<BankAccount> addBankAccount(
-            @RequestBody BankAccount newBankAccount) {
-
-        BankAccount bankAccount = bankAccountService.add(newBankAccount);
-        if (Objects.isNull(bankAccount)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
+    public String addBankAccount(
+            @Valid BankAccount newBankAccount,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+        if (result.hasErrors()) {
+            return "addBankAccount";
         }
+        // We'll create User owner through authenticated user
+        String email = authentication.getName();
+        Long userId = userService.findUserByEmail(email).getId();
+
+        BankAccount bankAccount = bankAccountService.add(newBankAccount, userId);
+        return "redirect:/user/profile";
     }
-    @DeleteMapping("/profile/deleteBankAccount")
+    @GetMapping("/profile/deleteBankAccount/{id}")
     public String deleteBankAccount(
-            @PathVariable String id) {
-System.out.println(id);
-        //bankAccountService.deleteById(id);
-        return "redirect:/profile";
+            @PathVariable("id") long id,
+            Model model) {
+        BankAccount bankAccount = bankAccountService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid bank account Id:" + id));
+
+        bankAccountService.delete(bankAccount);
+        return "redirect:/user/profile";
     }
 }

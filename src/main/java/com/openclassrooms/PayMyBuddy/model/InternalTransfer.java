@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Table(name = "InternalTransfers")
 public class InternalTransfer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_internaltrans")
     private long id;
 

@@ -26,19 +26,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Iterable<User> findAllUsers() {
+    public Iterable<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public Optional<User> findUserById(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
     public User findUserByEmailAndPassword(String email) {
         User user = new User();
-        Iterable<User> users = findAllUsers();
+        Iterable<User> users = findAll();
         for (User u : users) {
             if (Objects.equals(u.getEmail(), email)) {
                 user.setEmail(u.getEmail());
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         UserDetailsDTO userDetailsDTO = new UserDetailsDTO();
         List<ContactDTO> contacts = new ArrayList<>();
 
-        Iterable<User> users = findAllUsers();
+        Iterable<User> users = findAll();
         for (User u : users) {
             if (Objects.equals(u.getEmail(), email)) {
                 for (User contact : u.getContacts()) {
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<BankAccountDTO> findBankAccountsByUserId(Long id) {
         List<BankAccountDTO> bankAccountDTOs = new ArrayList<>();
-        Optional<User> owner = findUserById(id);
+        Optional<User> owner = findById(id);
         List<BankAccount> bankAccounts = owner.map(User::getBankAccounts).orElse(null);
 
         assert bankAccounts != null;
@@ -115,14 +115,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<InternalTransfer> findInternalTransferByUserId(Long id) {
-        Optional<User> emitter = findUserById(id);
+        Optional<User> emitter = findById(id);
 
         return emitter.map(User::getInternalTransfers).orElse(null);
     }
 
     @Override
     public List<ExternalTransfer> findExternalTransferByUserId(Long id) {
-        Optional<User> emitter = findUserById(id);
+        Optional<User> emitter = findById(id);
 
         return emitter.map(User::getExternalTransfers).orElse(null);
     }

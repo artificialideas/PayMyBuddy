@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "BankAccounts")
 public class BankAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_bank")
     private long id;
 

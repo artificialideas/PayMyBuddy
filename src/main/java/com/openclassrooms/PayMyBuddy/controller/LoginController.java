@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LoginController {
-    private UserService userService;
-
     private final String SECURED_URL = "user";
 
     @Autowired
-    public void UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @RequestMapping("/")
     public String root() {

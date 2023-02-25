@@ -5,9 +5,9 @@ import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import java.util.Optional;
 
 public interface BankAccountService {
-    Optional<BankAccount> findBankAccountById(Long id);
+    Optional<BankAccount> findById(Long id);
 
-    BankAccount add(BankAccount bankAccount);
+    BankAccount add(BankAccount bankAccount, Long userId);
 
-    void deleteById(Long id);
+    void delete(BankAccount bankAccount);
 }

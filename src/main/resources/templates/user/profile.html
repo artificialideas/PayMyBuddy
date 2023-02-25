@@ -157,24 +157,20 @@
             </button>
           </form>
         </div>
-        <div class="tab-pane" id="bank" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="tab-pane" id="bank" role="tabpanel" aria-labelledby="bank-tab">
           <h3>My bank accounts</h3>
           <ul class="list-group list-group-flush">
             <li th:each="bank : ${bank}" class="list-group-item d-flex justify-content-between align-items-center">
               <p th:text="${bank.iban}">Iban</p>
-              <form th:action="@{/user/profile/deleteBankAccount/{id}(id=${bank.id})}" method="delete">
-                <input type="hidden" name="_method" value="delete" />
-                <button type="submit"
-                        class="btn btn-link"
-                        id="bankDeleteButton">
-                  <span class="material-icons">delete</span>
-                </button>
-              </form>
+              <a th:href="@{/user/profile/deleteBankAccount/{id}(id=${bank.id})}"
+                      class="btn btn-link">
+                <span class="material-icons">delete</span>
+              </a>
             </li>
           </ul>
 
           <h3>Add a new bank account</h3>
-          <form th:action="@{/user/profile/addBankAccount}" method="post">
+          <form th:action="@{/user/profile/addBankAccount/}" th:object="${newBankAccount}" method="post">
             <div class="form-group">
               <label for="iban">Iban</label>
               <input type="text"
@@ -207,7 +203,7 @@
             </button>
           </form>
         </div>
-        <div class="tab-pane" id="friends" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane" id="friends" role="tabpanel" aria-labelledby="friends-tab">...</div>
       </div>
     </div>
   </main>

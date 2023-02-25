@@ -39,7 +39,7 @@ public class InternalTransferServiceImpl implements InternalTransferService {
         Currency currency = Currency.getInstance("EUR");
 
         // There is only one emitter
-        Optional<User> emitter = userService.findUserById(id);
+        Optional<User> emitter = userService.findById(id);
         EmitterDTO emitterDTO = new EmitterDTO();
             emitterDTO.setId(emitter.map(User::getId).orElse(null));
             emitterDTO.setSavings(emitter.map(User::getSavings).orElse(null));
@@ -48,7 +48,7 @@ public class InternalTransferServiceImpl implements InternalTransferService {
         List<InternalTransfer> internalTransfers = userService.findInternalTransferByUserId(id);
         // For each transfer, fill the InternalTransferDTO object
         for (InternalTransfer it : internalTransfers) {
-            Optional<User> receiver = userService.findUserById(it.getReceiver().getId());
+            Optional<User> receiver = userService.findById(it.getReceiver().getId());
             ContactDTO receiverDTO = new ContactDTO();
                 receiverDTO.setFirstName(receiver.map(User::getFirstName).orElse(null));
                 receiverDTO.setLastName(receiver.map(User::getLastName).orElse(null));
