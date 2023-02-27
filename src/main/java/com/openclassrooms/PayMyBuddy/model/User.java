@@ -102,12 +102,6 @@ public class User {
     public void setContacts(List<User> contacts) {
         this.contacts = contacts;
     }
-    public void addContact(User contact) {
-        this.contacts.add(contact);
-    }
-    public void removeContact(User contact) {
-        this.contacts.remove(contact);
-    }
 
     /* @OneToMany -> owner */
     /*public List<BankAccount> getBankAccount() {

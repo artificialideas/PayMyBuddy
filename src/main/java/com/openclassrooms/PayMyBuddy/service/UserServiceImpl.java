@@ -9,7 +9,6 @@ import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -90,19 +89,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User userToUpdate, Long id) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User savedUser = new User();
 
-        userToUpdate.setId(savedUser.getId());
-        if (user.getEmail() != null && !(user.getEmail().equals(savedUser.getEmail())))
+        Optional<User> optSavedUser = findById(id);
+        if (optSavedUser.isPresent()) savedUser = optSavedUser.get();
+
+        if (userToUpdate.getEmail() != null)
             savedUser.setEmail(userToUpdate.getEmail());
-        if (user.getFirstName() != null && !(user.getFirstName().equals(savedUser.getFirstName())))
+        if (userToUpdate.getFirstName() != null)
             savedUser.setFirstName(userToUpdate.getFirstName());
-        if (user.getLastName() != null && !(user.getLastName().equals(savedUser.getLastName())))
+        if (userToUpdate.getLastName() != null)
             savedUser.setLastName(userToUpdate.getLastName());
-        if (user.getPassword() != null)
-            savedUser.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
 
-        userRepository.save(user);
+        userRepository.save(savedUser);
     }
 
     @Override
