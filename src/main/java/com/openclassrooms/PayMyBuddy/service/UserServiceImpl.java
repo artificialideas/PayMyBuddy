@@ -9,12 +9,14 @@ import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -87,6 +89,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void update(User userToUpdate, Long id) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        userToUpdate.setId(savedUser.getId());
+        if (user.getEmail() != null && !(user.getEmail().equals(savedUser.getEmail())))
+            savedUser.setEmail(userToUpdate.getEmail());
+        if (user.getFirstName() != null && !(user.getFirstName().equals(savedUser.getFirstName())))
+            savedUser.setFirstName(userToUpdate.getFirstName());
+        if (user.getLastName() != null && !(user.getLastName().equals(savedUser.getLastName())))
+            savedUser.setLastName(userToUpdate.getLastName());
+        if (user.getPassword() != null)
+            savedUser.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+
+        userRepository.save(user);
+    }
+
+    @Override
     public List<ContactDTO> findContactsByUserEmail(String email) {
         UserDetailsDTO user = findUserByEmail(email);
 
@@ -125,5 +144,38 @@ public class UserServiceImpl implements UserService {
         Optional<User> emitter = findById(id);
 
         return emitter.map(User::getExternalTransfers).orElse(null);
+    }
+
+    @Override
+    public User addContact(Long userId, Long contactId) {
+        Optional<User> user = findById(userId);
+        Optional<User> contact = findById(contactId);
+        //user.addContact(contact);
+
+        return null;//userRepository.save(user);
+    }
+
+    @Override
+    public void deleteContact(Long userId, Long contactId) {
+        List<User> contactsToSave = new ArrayList<>();
+        Optional<User> user = findById(userId);
+
+        // ToDo: set new contacts to user and update -> userRepository.save(user)
+        if (user.isPresent()) {
+            contactsToSave = user.get()
+                    .getContacts()
+                    .stream()
+                    .filter(co -> co.getId() != contactId)
+                    .collect(Collectors.toList());
+        }
+        // Maybe a removeContact()?
+        /*Optional<User> contact = findById(contactId);
+        user.removeContact(contact);*/
+
+        /*user.ifPresent(u -> u
+                .getContacts()
+                .stream()
+                .filter(co -> co.getId() != contactId)
+                .collect(Collectors.toList()));*/
     }
 }

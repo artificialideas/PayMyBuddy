@@ -96,12 +96,12 @@ public class User {
      *  Helper methods
      **/
     /* @ManyToMany -> contacts */
-    /*public List<User> getContacts() {
+    public List<User> getContacts() {
         return contacts;
     }
     public void setContacts(List<User> contacts) {
         this.contacts = contacts;
-    }*/
+    }
     public void addContact(User contact) {
         this.contacts.add(contact);
     }

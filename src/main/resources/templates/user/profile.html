@@ -90,7 +90,7 @@
       <!-- Tab panes -->
       <div class="tab-content mt-3" id="v-pills-tabContent"> <!--show active-->
         <div class="tab-pane show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          <form>
+          <form th:action="@{/user/profile/update/}" th:object="${user}" method="post">
             <div class="form-group">
               <label for="firstName">First name</label>
               <div class="input-group mb-2">
@@ -98,8 +98,7 @@
                        class="form-control"
                        id="firstName"
                        name="firstName"
-                       th:value="${user.firstName}"
-                       required>
+                       th:value="${user.firstName}">
               </div>
             </div>
             <div class="form-group">
@@ -109,8 +108,7 @@
                        class="form-control"
                        id="lastName"
                        name="lastName"
-                       th:value="${user.lastName}"
-                       required>
+                       th:value="${user.lastName}">
               </div>
             </div>
             <div class="form-group">
@@ -121,8 +119,7 @@
                        id="email"
                        name="email"
                        placeholder="Email"
-                       th:value="${user.email}"
-                       required>
+                       th:value="${user.email}">
               </div>
             </div>
             <div class="border border-secondary rounded p-3 mt-2">
@@ -133,8 +130,7 @@
                          class="form-control"
                          id="password"
                          name="password"
-                         placeholder="Password"
-                         required>
+                         placeholder="Password">
                 </div>
               </div>
               <div class="form-group">
@@ -144,8 +140,7 @@
                          class="form-control"
                          id="passwordRe"
                          name="passwordRe"
-                         placeholder="Password"
-                         required>
+                         placeholder="Password">
                 </div>
               </div>
             </div>
@@ -203,7 +198,36 @@
             </button>
           </form>
         </div>
-        <div class="tab-pane" id="friends" role="tabpanel" aria-labelledby="friends-tab">...</div>
+        <div class="tab-pane" id="friends" role="tabpanel" aria-labelledby="friends-tab">
+          <h3>My connections</h3>
+          <ul class="list-group list-group-flush">
+            <li th:each="friend : ${friend}" class="list-group-item d-flex justify-content-between align-items-center">
+              <p th:text="${friend.firstName} + ' ' +${friend.lastName}">Friend full name</p>
+              <a th:href="@{/user/profile/deleteFriend/{email}(email=${friend.email})}"
+                 class="btn btn-link">
+                <span class="material-icons">delete</span>
+              </a>
+            </li>
+          </ul>
+
+          <h3>Add a new friend</h3>
+          <form th:action="@{/user/profile/addFriend/}" th:object="${newFriend}" method="post">
+            <div class="form-group">
+              <label for="friendEmail">Email</label>
+              <input type="text"
+                     class="form-control"
+                     id="friendEmail"
+                     name="email"
+                     placeholder="username@email.com">
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    id="friendAddButton">
+              Add friend
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </main>

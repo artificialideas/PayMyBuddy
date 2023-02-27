@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
+import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.BankAccountService;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
@@ -32,6 +33,10 @@ public class PagesController {
     @Autowired
     private ExternalTransferService externalTransferService;
 
+    /**
+     * TRANSFERS
+     */
+    /* Internal transfers */
     @GetMapping("/internalTransfer")
     String internalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
@@ -42,6 +47,7 @@ public class PagesController {
         return  SECURED_URL + "/internalTransfer";
     }
 
+    /* External transfers */
     @GetMapping("/externalTransfer")
     String externalTransfer(Authentication authentication, Model model) {
         String email = authentication.getName();
@@ -52,6 +58,10 @@ public class PagesController {
         return  SECURED_URL + "/externalTransfer";
     }
 
+
+    /**
+     * PROFILE
+     */
     @GetMapping("/profile")
     String profile(Authentication authentication, Model model) {
         String email = authentication.getName();
@@ -59,8 +69,25 @@ public class PagesController {
 
         model.addAttribute("user", user);
         model.addAttribute("bank", userService.findBankAccountsByUserId(user.getId()));
+        model.addAttribute("friend", userService.findContactsByUserEmail(email));
         return SECURED_URL + "/profile";
     }
+    /* Edit info */
+    @PostMapping("/profile/update")
+    public String updateUser(
+            @Valid User userToUpdate,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+        UserDetailsDTO savedUser = userService.findUserByEmail(authentication.getName());
+
+        if (userToUpdate != null && savedUser != null) {
+            userService.update(userToUpdate, savedUser.getId());
+        }
+        return "redirect:/user/profile";
+    }
+
+    /* Bank accounts */
     @PostMapping("/profile/addBankAccount")
     public String addBankAccount(
             @Valid BankAccount newBankAccount,
@@ -74,7 +101,7 @@ public class PagesController {
         String email = authentication.getName();
         Long userId = userService.findUserByEmail(email).getId();
 
-        BankAccount bankAccount = bankAccountService.add(newBankAccount, userId);
+        bankAccountService.add(newBankAccount, userId);
         return "redirect:/user/profile";
     }
     @GetMapping("/profile/deleteBankAccount/{id}")
@@ -82,9 +109,40 @@ public class PagesController {
             @PathVariable("id") long id,
             Model model) {
         BankAccount bankAccount = bankAccountService.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid bank account Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid bank account Id: " + id));
 
         bankAccountService.delete(bankAccount);
+        return "redirect:/user/profile";
+    }
+
+    /* Connections */
+    @PostMapping("/profile/addFriend")
+    public String addFriend(
+            @Valid String friendEmail,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+        if (result.hasErrors()) {
+            return "addFriend";
+        }
+        // We'll create User owner through authenticated user
+        String email = authentication.getName();
+        Long userId = userService.findUserByEmail(email).getId();
+        Long contactId = userService.findUserByEmail(friendEmail).getId();
+
+        userService.addContact(userId, contactId);
+        return "redirect:/user/profile";
+    }
+    @GetMapping("/profile/deleteFriend/{email}")
+    public String deleteFriend(
+            @PathVariable("email") String contactEmail,
+            Authentication authentication,
+            Model model) {
+        String userEmail = authentication.getName();
+        Long userId = userService.findUserByEmail(userEmail).getId();
+        Long contactId = userService.findUserByEmail(contactEmail).getId();
+
+        userService.deleteContact(userId, contactId);
         return "redirect:/user/profile";
     }
 }

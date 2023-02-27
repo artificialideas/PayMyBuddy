@@ -26,4 +26,10 @@ public interface UserService {
     List<InternalTransfer> findInternalTransferByUserId(Long id);
 
     List<ExternalTransfer> findExternalTransferByUserId(Long id);
+
+    void update(User user, Long id);
+
+    User addContact(Long userId, Long contactId);
+
+    void deleteContact(Long userId, Long contactId);
 }
