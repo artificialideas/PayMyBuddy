@@ -42,7 +42,7 @@ public class User {
     private String password;
 
     @Column(name = "savings", nullable = false)
-    private BigDecimal savings;
+    private BigDecimal savings = new BigDecimal(0);
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

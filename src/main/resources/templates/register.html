@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Pay My Buddy</title>
+    <title>Pay My Buddy - Register</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -21,32 +21,35 @@
         </header>
 
         <main>
-            <form class="login-form" th:action="@{/login}" method="post">
+            <form class="text-left" th:action="@{/register/create/}" th:object="${newUser}" method="post">
                 <div th:if="${param.error}">
                     <div class="alert alert-danger">
                         Invalid username or password.
                     </div>
                 </div>
-                <div th:if="${param.logout}">
-                    <div class="alert alert-info">
-                        You have been logged out.
-                    </div>
-                </div>
-                <div th:if="${param.newUser}">
-                    <div class="alert alert-success">
-                        Congratulations! Your account has been created.<br/>
-                        Login to start using <strong>Pay My Buddy</strong>.
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label for="email" hidden>Email</label>
+                    <label for="firstName">First name</label>
                     <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <span class="material-icons">email</span>
-                            </div>
-                        </div>
+                        <input type="text"
+                               class="form-control"
+                               id="firstName"
+                               name="firstName"
+                               required autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <div class="input-group mb-2">
+                        <input type="text"
+                               class="form-control"
+                               id="lastName"
+                               name="lastName"
+                               required autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-group mb-2">
                         <input type="text"
                                class="form-control"
                                id="email"
@@ -56,13 +59,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password" hidden>Password</label>
+                    <label for="password">Password</label>
                     <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <span class="material-icons">password</span>
-                            </div>
-                        </div>
                         <input type="password"
                                class="form-control"
                                id="password"
@@ -71,14 +69,10 @@
                                required autofocus>
                     </div>
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" name="_spring_security_remember_me" />
-                    <label>Remember me</label>
-                </div>
                 <div class="pb-4">
-                    <a th:href="@{/register}">Doesn't have an account? <strong>Register</strong></a>
+                    <a th:href="@{/login}">Do you have an account? <strong>Login</strong></a>
                 </div>
-                <button type="submit" class="btn btn-primary w-50 mt-4">Login</button>
+                <button type="submit" class="btn btn-primary w-50 mt-4">Sign in</button>
             </form>
         </main>
     </div>

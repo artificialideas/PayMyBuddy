@@ -27,6 +27,8 @@ public interface UserService {
 
     List<ExternalTransfer> findExternalTransferByUserId(Long id);
 
+    void create(User user);
+
     void update(User user, Long id);
 
     User addContact(Long userId, Long contactId);

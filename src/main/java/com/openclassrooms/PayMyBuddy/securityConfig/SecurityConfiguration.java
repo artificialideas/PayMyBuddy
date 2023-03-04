@@ -28,7 +28,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-        /* user@mail.org / pass */
     }
 
     // Configuration to authorize requests
@@ -36,7 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/signin**")
+                .antMatchers("/register",
+                        "/register/**",
+                        "/login**",
+                        "/static/css/**",
+                        "/css/core.css",
+                        "/img/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
