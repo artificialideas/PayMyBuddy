@@ -11,4 +11,5 @@ public class UserDetailsDTO {
     private String lastName;
     private String email;
     private List<ContactDTO> contacts;
+    private String savings;
 }

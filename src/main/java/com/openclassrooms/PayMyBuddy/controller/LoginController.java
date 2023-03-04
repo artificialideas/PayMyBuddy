@@ -46,6 +46,9 @@ public class LoginController {
         return "redirect:/register?error";
     }
 
+    /**
+     * HOMEPAGE
+     */
     @RequestMapping("/user/index")
     public String userIndex(Authentication authentication, Model model) {
         String email = authentication.getName();

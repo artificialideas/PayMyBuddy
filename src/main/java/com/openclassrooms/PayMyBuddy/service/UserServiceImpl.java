@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
     public UserDetailsDTO findUserByEmail(String email) {
         UserDetailsDTO userDetailsDTO = new UserDetailsDTO();
         List<ContactDTO> contacts = new ArrayList<>();
+        Currency currency = Currency.getInstance("EUR");
 
         Iterable<User> users = findAll();
         for (User u : users) {
@@ -76,6 +79,7 @@ public class UserServiceImpl implements UserService {
                 userDetailsDTO.setLastName(u.getLastName());
                 userDetailsDTO.setEmail(u.getEmail());
                 userDetailsDTO.setContacts(contacts);
+                userDetailsDTO.setSavings(u.getSavings().setScale(2, RoundingMode.HALF_EVEN) + currency.getSymbol());
                 break;
             }
         }

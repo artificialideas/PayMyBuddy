@@ -145,4 +145,12 @@ public class PagesController {
         userService.deleteContact(userId, contactId);
         return "redirect:/user/profile";
     }
+
+    /**
+     * CONTACT (under construction)
+     */
+    @GetMapping("/contact")
+    public String register() {
+        return SECURED_URL + "/contact";
+    }
 }
