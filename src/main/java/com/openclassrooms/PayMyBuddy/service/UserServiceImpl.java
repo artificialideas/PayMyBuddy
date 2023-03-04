@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -147,34 +146,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addContact(Long userId, Long contactId) {
+        User updatedUser = new User();
+        User newContact = new User();
+
         Optional<User> user = findById(userId);
         Optional<User> contact = findById(contactId);
-        //user.addContact(contact);
 
-        return null;//userRepository.save(user);
+        // Validate that both users exists & that contact is not in user's contacts list
+        if (user.isPresent() && contact.isPresent()
+            && !(user.get().getContacts().contains(contact.get()))) {
+            updatedUser = user.get();
+            newContact = contact.get();
+
+            updatedUser.getContacts().add(newContact);
+        } else if (user.isEmpty()) throw new RuntimeException("User not found");
+        else if (contact.isEmpty()) throw new RuntimeException("Contact not found");
+        else throw new RuntimeException("This contact is already in user's contacts lists");
+
+        return userRepository.save(updatedUser);
     }
 
     @Override
     public void deleteContact(Long userId, Long contactId) {
-        List<User> contactsToSave = new ArrayList<>();
+        User updatedUser = new User();
+        User removeContact = new User();
+
         Optional<User> user = findById(userId);
+        Optional<User> contact = findById(contactId);
 
-        // ToDo: set new contacts to user and update -> userRepository.save(user)
-        if (user.isPresent()) {
-            contactsToSave = user.get()
-                    .getContacts()
-                    .stream()
-                    .filter(co -> co.getId() != contactId)
-                    .collect(Collectors.toList());
-        }
-        // Maybe a removeContact()?
-        /*Optional<User> contact = findById(contactId);
-        user.removeContact(contact);*/
+        // Validate that both users exists & that contact is in user's contacts list
+        if (user.isPresent() && contact.isPresent()
+            && user.get().getContacts().contains(contact.get())) {
+            updatedUser = user.get();
+            removeContact = contact.get();
 
-        /*user.ifPresent(u -> u
-                .getContacts()
-                .stream()
-                .filter(co -> co.getId() != contactId)
-                .collect(Collectors.toList()));*/
+            updatedUser.getContacts().remove(removeContact);
+        } else if (user.isEmpty()) throw new RuntimeException("User not found");
+        else if (contact.isEmpty()) throw new RuntimeException("Contact not found");
+        else throw new RuntimeException("This contact is not in user's contacts lists");
+
+        userRepository.save(updatedUser);
     }
 }

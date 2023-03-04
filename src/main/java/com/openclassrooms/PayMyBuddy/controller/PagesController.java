@@ -1,5 +1,6 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
+import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.User;
@@ -118,17 +119,16 @@ public class PagesController {
     /* Connections */
     @PostMapping("/profile/addFriend")
     public String addFriend(
-            @Valid String friendEmail,
+            @Valid ContactDTO newFriend,
             BindingResult result,
             Authentication authentication,
             Model model) {
         if (result.hasErrors()) {
             return "addFriend";
         }
-        // We'll create User owner through authenticated user
         String email = authentication.getName();
         Long userId = userService.findUserByEmail(email).getId();
-        Long contactId = userService.findUserByEmail(friendEmail).getId();
+        Long contactId = userService.findUserByEmail(newFriend.getEmail()).getId();
 
         userService.addContact(userId, contactId);
         return "redirect:/user/profile";
