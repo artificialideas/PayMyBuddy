@@ -17,8 +17,36 @@ public class BankAccountServiceImpl implements BankAccountService {
     private BankAccountRepository bankAccountRepository;
 
     @Override
+    public Iterable<BankAccount> findAll() {
+        return bankAccountRepository.findAll();
+    }
+
+    @Override
     public Optional<BankAccount> findById(Long id) {
         return bankAccountRepository.findById(id);
+    }
+
+    @Override
+    public BankAccount findBankAccountByIban(String iban) {
+        Iterable<BankAccount> bankAccounts = findAll();
+        BankAccount bankAccount = new BankAccount();
+
+        for (BankAccount b : bankAccounts) {
+            if (Objects.equals(b.getIban(), iban)) {
+                bankAccount.setId(b.getId());
+                bankAccount.setCredentials(b.getCredentials());
+                bankAccount.setIban(b.getIban());
+                bankAccount.setSwift(b.getSwift());
+                bankAccount.setOwner(b.getOwner());
+                break;
+            }
+        }
+
+        if (bankAccount.getIban() == null) {
+            throw new RuntimeException("Bank account not found with iban " + iban);
+        }
+
+        return bankAccount;
     }
 
     @Override

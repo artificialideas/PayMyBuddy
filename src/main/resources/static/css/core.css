@@ -2,6 +2,7 @@ html, body {
     height: 100%;
 }
 .px-6 { padding: .375rem 3rem; }
+.lh-1 { line-height: 1.8em; }
 
 /* Pay My Buddy brand */
 .navbar-brand {

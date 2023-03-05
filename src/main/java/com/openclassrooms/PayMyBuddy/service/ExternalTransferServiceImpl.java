@@ -3,11 +3,13 @@ package com.openclassrooms.PayMyBuddy.service;
 import com.openclassrooms.PayMyBuddy.dao.ExternalTransferRepository;
 import com.openclassrooms.PayMyBuddy.dto.EmitterDTO;
 import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
+import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -17,17 +19,14 @@ import java.util.Optional;
 @Service
 public class ExternalTransferServiceImpl implements ExternalTransferService {
     @Autowired
+    private UserService userService;
+    @Autowired
+    private BankAccountService bankAccountService;
+    @Autowired
     private ExternalTransferRepository externalTransferRepository;
 
-    public ExternalTransferServiceImpl(ExternalTransferRepository externalTransferRepository) {
-        this.externalTransferRepository = externalTransferRepository;
-    }
-
-    @Autowired
-    private UserService userService;
-
     @Override
-    public Optional<ExternalTransfer> findExternalTransferById(Long id) {
+    public Optional<ExternalTransfer> findById(Long id) {
         return externalTransferRepository.findById(id);
     }
 
@@ -58,5 +57,34 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
         }
 
         return allExternalTransfers;
+    }
+
+    @Override
+    public ExternalTransfer add(ExternalTransferDTO externalTransferDTO, Long emitterId) {
+        // Check if there are enough money to withdraw
+        Optional<User> emitter = userService.findById(emitterId);
+        ExternalTransfer externalTransfer = new ExternalTransfer();
+
+        if (emitter.isPresent()) {
+            float savedMoney = emitter.get().getSavings().setScale(2, RoundingMode.HALF_EVEN).floatValue();
+            float enteredAmount = Float.parseFloat(externalTransferDTO.getAmount());
+            // If savedMoney >= enteredAmount
+            if (savedMoney >= enteredAmount) {
+                BankAccount bankAccount = bankAccountService.findBankAccountByIban(externalTransferDTO.getIban());
+                // Save transfer
+                externalTransfer.setEmitter(emitter.get());
+                externalTransfer.setAmount(BigDecimal.valueOf(enteredAmount));
+                externalTransfer.setDescription(externalTransferDTO.getDescription());
+                externalTransfer.setBankAccount(bankAccount);
+                externalTransferRepository.save(externalTransfer);
+
+                // Save new available amount
+                float availableMoney = savedMoney - enteredAmount;
+                emitter.get().setSavings(BigDecimal.valueOf(availableMoney));
+                userService.save(emitter.get());
+            } else throw new RuntimeException("The entered amount is higher than the saved money");
+        } else throw new RuntimeException(emitter.get().getEmail() + " doesn't exist");
+
+        return externalTransfer;
     }
 }

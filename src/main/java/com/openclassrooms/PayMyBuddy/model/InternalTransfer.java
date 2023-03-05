@@ -3,7 +3,6 @@ package com.openclassrooms.PayMyBuddy.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class InternalTransfer {
     private LocalDateTime date = LocalDateTime.now();
 
     @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    private BigDecimal amount =  new BigDecimal(0);
 
     @Column(name = "text_description")
     private String description;
@@ -42,7 +41,7 @@ public class InternalTransfer {
             nullable = false)
     private User emitter;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(
             name = "id_receiver_user",
             unique = true,

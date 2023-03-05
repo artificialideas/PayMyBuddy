@@ -1,6 +1,7 @@
 package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
+import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.User;
@@ -47,6 +48,7 @@ public class PagesController {
         model.addAttribute("internalTransfer", internalTransferService.findInternalTransferByUserId(id));
         return  SECURED_URL + "/internalTransfer";
     }
+    /* -- Add new internal*/
 
     /* External transfers */
     @GetMapping("/externalTransfer")
@@ -58,7 +60,22 @@ public class PagesController {
         model.addAttribute("externalTransfer", externalTransferService.findExternalTransactionByUserId(id));
         return  SECURED_URL + "/externalTransfer";
     }
+    /* -- Add new external */
+    @PostMapping("/externalTransfer/create")
+    public String addExternalTransfer(
+            @Valid ExternalTransferDTO newExternal,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+        if (result.hasErrors()) {
+            return "addExternalTransfer";
+        }
 
+        String email = authentication.getName();
+        Long id = userService.findUserByEmail(email).getId();
+        externalTransferService.add(newExternal, id);
+        return "redirect:/user/externalTransfer";
+    }
 
     /**
      * PROFILE

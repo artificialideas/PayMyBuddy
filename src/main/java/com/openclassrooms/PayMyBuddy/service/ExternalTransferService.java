@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ExternalTransferService {
-    Optional<ExternalTransfer> findExternalTransferById(Long id);
+    Optional<ExternalTransfer> findById(Long id);
 
     List<ExternalTransferDTO> findExternalTransactionByUserId(Long id);
+
+    ExternalTransfer add(ExternalTransferDTO externalTransfer, Long id);
 }

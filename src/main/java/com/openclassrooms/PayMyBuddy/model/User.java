@@ -104,52 +104,26 @@ public class User {
     }
 
     /* @OneToMany -> owner */
-    /*public List<BankAccount> getBankAccount() {
+    public List<BankAccount> getBankAccount() {
         return bankAccounts;
     }
     public void setBankAccount(List<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
-    }*/
-    public void addBankAccount(BankAccount bankAccount) {
-        this.bankAccounts.add(bankAccount);
-        bankAccount.setOwner(this);
-    }
-    public void removeBankAccount(BankAccount bankAccount) {
-        this.bankAccounts.remove(bankAccount);
-        bankAccount.setOwner(this);
     }
 
-    /* @OneToMany & @OneToOne -> emitter & receiver (InternalTransfer) *//*
-    /*public List<InternalTransfer> getInternalTransfer() {
+    /* @OneToMany & @OneToOne -> emitter & receiver (InternalTransfer) */
+    public List<InternalTransfer> getInternalTransfer() {
         return internalTransfers;
     }
     public void setInternalTransfer(List<InternalTransfer> internalTransfers) {
         this.internalTransfers = internalTransfers;
-    }*/
-    public void addInternalTransfer(InternalTransfer internalTransfer) {
-        this.internalTransfers.add(internalTransfer);
-        internalTransfer.setEmitter(this);
-        //internalTransfer.setReceiver(this);
-    }
-    public void removeInternalTransfer(InternalTransfer internalTransfer) {
-        this.internalTransfers.remove(internalTransfer);
-        internalTransfer.setEmitter(this);
-        //internalTransfer.setReceiver(this);
     }
 
-    /* @OneToMany -> emitter (ExternalTransfer) *//*
-    /*public List<ExternalTransfer> getExternalTransfer() {
+    /* @OneToMany -> emitter (ExternalTransfer) */
+    public List<ExternalTransfer> getExternalTransfer() {
         return externalTransfers;
     }
     public void setExternalTransfer(List<ExternalTransfer> externalTransfers) {
         this.externalTransfers = externalTransfers;
-    }*/
-    public void addExternalTransfer(ExternalTransfer externalTransfer) {
-        this.externalTransfers.add(externalTransfer);
-        externalTransfer.setEmitter(this);
-    }
-    public void removeExternalTransfer(ExternalTransfer externalTransfer) {
-        this.externalTransfers.remove(externalTransfer);
-        externalTransfer.setEmitter(this);
     }
 }

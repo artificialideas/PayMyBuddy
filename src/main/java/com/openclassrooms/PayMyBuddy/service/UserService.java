@@ -31,6 +31,8 @@ public interface UserService {
 
     void update(User user, Long id);
 
+    void save(User user);
+
     User addContact(Long userId, Long contactId);
 
     void deleteContact(Long userId, Long contactId);

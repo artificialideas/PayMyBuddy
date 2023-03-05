@@ -117,6 +117,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(User user) {
+        // Check just in case
+        Optional<User> userToSave = findById(user.getId());
+        if (userToSave.isPresent()) userRepository.save(user);
+    }
+
+    @Override
     public List<ContactDTO> findContactsByUserEmail(String email) {
         UserDetailsDTO user = findUserByEmail(email);
 
@@ -133,8 +140,6 @@ public class UserServiceImpl implements UserService {
         for (BankAccount account : bankAccounts) {
             BankAccountDTO bankAccountDTO = new BankAccountDTO();
                 bankAccountDTO.setId(account.getId());
-                bankAccountDTO.setEmail(owner.get().getEmail());
-                bankAccountDTO.setCredentials(account.getCredentials());
                 bankAccountDTO.setIban(account.getIban());
                 bankAccountDTO.setSwift(account.getSwift());
             bankAccountDTOs.add(bankAccountDTO);
