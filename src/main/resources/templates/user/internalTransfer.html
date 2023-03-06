@@ -65,25 +65,52 @@
         <div class="container w-75">
             <h1 class="mb-4">Internal transfers</h1>
             <section class="mb-4">
-                <div class="row">
-                    <h2 class="col">Send Money to a friend</h2>
-                    <button type="button" class="btn btn-primary px-4">Add connection</button>
+                <div class="d-flex justify-content-between">
+                    <h2>Send Money to a friend</h2>
+                    <a th:href="@{/user/profile#friends}" class="btn btn-primary px-4 lh-1">Add connection</a>
                 </div>
-                <form class="row transfer-form py-4 justify-content-center">
-                    <div class="mr-2">
-                        <label for="selectConnection" hidden>Select a connection</label>
-                        <select class="form-control" id="selectConnection">
-                            <option>Select a connection</option>
-                            <option th:each="friend : ${friend}">
-                                <span th:text="${friend.firstName} + ' ' + ${friend.lastName}">Friend</span>
-                            </option>
-                        </select>
+                <form class="transfer-form p-4 container" th:action="@{/user/internalTransfer/create/}" th:object="${newInternal}" method="post">
+                    <div class="row">
+                        <div class="col-8 form-group">
+                            <label for="selectConnection" hidden>Select a connection</label>
+                            <select class="form-control"
+                                    id="selectConnection"
+                                    name="receiver.email"
+                                    required>
+                                <option>Select a connection</option>
+                                <option th:each="receiver : ${receiver}"
+                                        th:value="${receiver.email}"
+                                        th:text="${receiver.firstName} + ' ' + ${receiver.lastName}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col form-group">
+                            <label for="amount" hidden>Amount</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <span class="material-icons">euro_symbol</span>
+                                    </div>
+                                </div>
+                                <input type="number"
+                                       step=0.01
+                                       class="form-control"
+                                       id="amount"
+                                       name="amount"
+                                       placeholder="0"
+                                       required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mx-2">
-                        <label for="amountNumber" hidden>Amount</label>
-                        <input type="number" class="form-control" id="amountNumber" placeholder="0€">
+                    <div class="form-group">
+                        <label for="description" hidden>Description</label>
+                        <textarea class="form-control"
+                                  id="description"
+                                  name="description"
+                                  placeholder="Description"
+                                  required></textarea>
                     </div>
-                    <div class="ml-2">
+                    <div class="text-right">
                         <button type="submit" class="btn btn-secondary px-6">Send</button>
                     </div>
                 </form>

@@ -68,4 +68,37 @@ public class InternalTransferServiceImpl implements InternalTransferService {
 
         return allInternalTransfers;
     }
+
+    @Override
+    public InternalTransfer add(InternalTransferDTO internalTransferDTO, Long emitterId) {
+        InternalTransfer internalTransfer = new InternalTransfer();
+
+        Optional<User> emitter = userService.findById(emitterId);
+        Long receiverId = userService.findUserByEmail(internalTransferDTO.getReceiver().getEmail()).getId();
+        Optional<User> receiver = userService.findById(receiverId);
+
+        if (emitter.isPresent() && receiver.isPresent()) {
+            float savedMoney = emitter.get().getSavings().setScale(2, RoundingMode.HALF_EVEN).floatValue();
+            float enteredAmount = Float.parseFloat(internalTransferDTO.getAmount());
+            // If savedMoney >= enteredAmount
+            if (savedMoney >= enteredAmount) {
+                // Save transfer
+                internalTransfer.setEmitter(emitter.get());
+                internalTransfer.setReceiver(receiver.get());
+                internalTransfer.setAmount(BigDecimal.valueOf(enteredAmount));
+                internalTransfer.setDescription(internalTransferDTO.getDescription());
+                internalTransferRepository.save(internalTransfer);
+
+                // Save new available amount
+                    // Subtract 0.5% fee
+                float fee = (float) (enteredAmount * 0.05);
+                float availableMoney = savedMoney - (fee + enteredAmount);
+                emitter.get().setSavings(BigDecimal.valueOf(availableMoney));
+                userService.save(emitter.get());
+            } else throw new RuntimeException("The entered amount is higher than the saved money");
+        } else if (emitter.isPresent()) throw new RuntimeException(emitter.get().getEmail() + " doesn't exist");
+        else throw new RuntimeException(receiver.get().getEmail() + " doesn't exist");
+
+        return internalTransfer;
+    }
 }

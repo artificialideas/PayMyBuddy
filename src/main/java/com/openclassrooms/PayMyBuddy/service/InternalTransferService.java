@@ -10,4 +10,6 @@ public interface InternalTransferService {
     Optional<InternalTransfer> findInternalTransferById(Long id);
 
     List<InternalTransferDTO> findInternalTransferByUserId(Long id);
+
+    InternalTransfer add(InternalTransferDTO externalTransfer, Long id);
 }

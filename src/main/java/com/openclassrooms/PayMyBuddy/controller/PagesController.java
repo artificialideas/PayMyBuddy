@@ -2,6 +2,7 @@ package com.openclassrooms.PayMyBuddy.controller;
 
 import com.openclassrooms.PayMyBuddy.dto.ContactDTO;
 import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
+import com.openclassrooms.PayMyBuddy.dto.InternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.User;
@@ -44,11 +45,34 @@ public class PagesController {
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 
-        model.addAttribute("friend", userService.findContactsByUserEmail(email));
+        model.addAttribute("receiver", userService.findContactsByUserEmail(email));
         model.addAttribute("internalTransfer", internalTransferService.findInternalTransferByUserId(id));
         return  SECURED_URL + "/internalTransfer";
     }
-    /* -- Add new internal*/
+    /* -- Add new internal */
+    @PostMapping("/internalTransfer/create")
+    public String addInternalTransfer(
+            @Valid InternalTransferDTO newInternal,
+            BindingResult result,
+            Authentication authentication,
+            Model model) {
+        if (result.hasErrors()) {
+            return "addInternalTransfer";
+        }
+
+        // Receiver
+        UserDetailsDTO receiverDTO = userService.findUserByEmail(newInternal.getReceiver().getEmail());
+        if (receiverDTO != null) {
+            newInternal.getReceiver().setFirstName(receiverDTO.getFirstName());
+            newInternal.getReceiver().setLastName(receiverDTO.getLastName());
+        } else return "addInternalTransfer";
+
+        // Emitter
+        String email = authentication.getName();
+        Long id = userService.findUserByEmail(email).getId();
+        internalTransferService.add(newInternal, id);
+        return "redirect:/user/internalTransfer";
+    }
 
     /* External transfers */
     @GetMapping("/externalTransfer")
