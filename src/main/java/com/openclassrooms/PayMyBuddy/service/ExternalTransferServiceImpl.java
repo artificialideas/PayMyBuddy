@@ -7,11 +7,16 @@ import com.openclassrooms.PayMyBuddy.model.BankAccount;
 import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +91,24 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
         } else throw new RuntimeException(emitter.get().getEmail() + " doesn't exist");
 
         return externalTransfer;
+    }
+
+    public Page<ExternalTransfer> findPaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<ExternalTransfer> list;
+
+        List<ExternalTransfer> externalTransfers = new ArrayList<>();
+        externalTransferRepository.findAll().iterator().forEachRemaining(externalTransfers::add);
+
+        if (externalTransfers.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, externalTransfers.size());
+            list = externalTransfers.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), externalTransfers.size());
     }
 }

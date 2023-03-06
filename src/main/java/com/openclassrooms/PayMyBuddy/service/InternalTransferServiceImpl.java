@@ -7,11 +7,16 @@ import com.openclassrooms.PayMyBuddy.dto.InternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
@@ -100,5 +105,24 @@ public class InternalTransferServiceImpl implements InternalTransferService {
         else throw new RuntimeException(receiver.get().getEmail() + " doesn't exist");
 
         return internalTransfer;
+    }
+
+    public Page<InternalTransfer> findPaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<InternalTransfer> list;
+
+        List<InternalTransfer> internalTransfers = new ArrayList<>();
+        internalTransferRepository.findAll().iterator().forEachRemaining(internalTransfers::add);
+
+        if (internalTransfers.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, internalTransfers.size());
+            list = internalTransfers.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), internalTransfers.size());
     }
 }

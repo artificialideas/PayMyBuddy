@@ -69,12 +69,6 @@ public class User {
             orphanRemoval = true)
     private List<InternalTransfer> internalTransfers = new ArrayList<>();
 
-    /*@OneToOne(
-            mappedBy = "receiver",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private InternalTransfer internalTransfer;*/
-
     @OneToMany(
             mappedBy = "emitter",
             cascade = {
@@ -111,7 +105,7 @@ public class User {
         this.bankAccounts = bankAccounts;
     }
 
-    /* @OneToMany & @OneToOne -> emitter & receiver (InternalTransfer) */
+    /* @OneToMany -> emitter (InternalTransfer) */
     public List<InternalTransfer> getInternalTransfer() {
         return internalTransfers;
     }

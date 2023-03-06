@@ -5,12 +5,16 @@ import com.openclassrooms.PayMyBuddy.dto.ExternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.dto.InternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.dto.UserDetailsDTO;
 import com.openclassrooms.PayMyBuddy.model.BankAccount;
+import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
+import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import com.openclassrooms.PayMyBuddy.service.BankAccountService;
 import com.openclassrooms.PayMyBuddy.service.ExternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.InternalTransferService;
 import com.openclassrooms.PayMyBuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +23,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/user/")
@@ -41,7 +50,27 @@ public class PagesController {
      */
     /* Internal transfers */
     @GetMapping("/internalTransfer")
-    String internalTransfer(Authentication authentication, Model model) {
+    String internalTransfer(
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size,
+            Authentication authentication,
+            Model model) {
+        // Pagination
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<InternalTransfer> internalTransfersPage = internalTransferService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("internalTransfersPage", internalTransfersPage);
+
+        int totalPages = internalTransfersPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        // Model view
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 
@@ -76,7 +105,27 @@ public class PagesController {
 
     /* External transfers */
     @GetMapping("/externalTransfer")
-    String externalTransfer(Authentication authentication, Model model) {
+    String externalTransfer(
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size,
+            Authentication authentication,
+            Model model) {
+        // Pagination
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+
+        Page<ExternalTransfer> externalTransfersPage = externalTransferService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("externalTransfersPage", externalTransfersPage);
+
+        int totalPages = externalTransfersPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        // Model view
         String email = authentication.getName();
         Long id = userService.findUserByEmail(email).getId();
 

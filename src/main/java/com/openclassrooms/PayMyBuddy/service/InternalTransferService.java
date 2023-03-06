@@ -2,6 +2,8 @@ package com.openclassrooms.PayMyBuddy.service;
 
 import com.openclassrooms.PayMyBuddy.dto.InternalTransferDTO;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,4 +14,6 @@ public interface InternalTransferService {
     List<InternalTransferDTO> findInternalTransferByUserId(Long id);
 
     InternalTransfer add(InternalTransferDTO externalTransfer, Long id);
+
+    Page<InternalTransfer> findPaginated(Pageable pageable);
 }
