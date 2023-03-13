@@ -9,8 +9,10 @@ import com.openclassrooms.PayMyBuddy.model.ExternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.InternalTransfer;
 import com.openclassrooms.PayMyBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -22,11 +24,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public Iterable<User> findAll() {
@@ -51,7 +49,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (user.getEmail() == null) {
-            throw new RuntimeException("User not found with email " + email);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email " + email);
         }
 
         return user;
@@ -85,7 +83,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userDetailsDTO.getEmail() == null) {
-            throw new RuntimeException("User not found with email " + email);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email " + email);
         }
 
         return userDetailsDTO;
@@ -120,7 +118,8 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         // Check just in case
         Optional<User> userToSave = findById(user.getId());
-        if (userToSave.isPresent()) userRepository.save(user);
+        if (userToSave.isPresent())
+            userRepository.save(user);
     }
 
     @Override
@@ -177,9 +176,12 @@ public class UserServiceImpl implements UserService {
             newContact = contact.get();
 
             updatedUser.getContacts().add(newContact);
-        } else if (user.isEmpty()) throw new RuntimeException("User not found");
-        else if (contact.isEmpty()) throw new RuntimeException("Contact not found");
-        else throw new RuntimeException("This contact is already in user's contacts lists");
+        } else if (user.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        else if (contact.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found");
+        else
+            throw new ResponseStatusException(HttpStatus.IM_USED, "This contact is already in user's contacts lists");
 
         return userRepository.save(updatedUser);
     }
@@ -199,9 +201,12 @@ public class UserServiceImpl implements UserService {
             removeContact = contact.get();
 
             updatedUser.getContacts().remove(removeContact);
-        } else if (user.isEmpty()) throw new RuntimeException("User not found");
-        else if (contact.isEmpty()) throw new RuntimeException("Contact not found");
-        else throw new RuntimeException("This contact is not in user's contacts lists");
+        } else if (user.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        else if (contact.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact not found");
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This contact is not in user's contacts lists");
 
         userRepository.save(updatedUser);
     }

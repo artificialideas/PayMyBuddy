@@ -11,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -87,8 +89,10 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
                 float availableMoney = savedMoney - enteredAmount;
                 emitter.get().setSavings(BigDecimal.valueOf(availableMoney));
                 userService.save(emitter.get());
-            } else throw new RuntimeException("The entered amount is higher than the saved money");
-        } else throw new RuntimeException(emitter.get().getEmail() + " doesn't exist");
+            } else
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The entered amount is higher than the saved money");
+        } else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, emitter.get().getEmail() + " doesn't exist");
 
         return externalTransfer;
     }

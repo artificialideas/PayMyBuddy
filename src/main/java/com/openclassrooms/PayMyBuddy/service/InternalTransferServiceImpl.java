@@ -11,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,11 +27,6 @@ import java.util.Optional;
 public class InternalTransferServiceImpl implements InternalTransferService {
     @Autowired
     private InternalTransferRepository internalTransferRepository;
-
-    public InternalTransferServiceImpl(InternalTransferRepository internalTransferRepository) {
-        this.internalTransferRepository = internalTransferRepository;
-    }
-
     @Autowired
     private UserService userService;
 
@@ -83,10 +80,12 @@ public class InternalTransferServiceImpl implements InternalTransferService {
         Optional<User> receiver = userService.findById(receiverId);
 
         if (emitter.isPresent() && receiver.isPresent()) {
-            float savedMoney = emitter.get().getSavings().setScale(2, RoundingMode.HALF_EVEN).floatValue();
+            float emitterSavedMoney = emitter.get().getSavings().setScale(2, RoundingMode.HALF_EVEN).floatValue();
+            float receiverSavedMoney = receiver.get().getSavings().setScale(2, RoundingMode.HALF_EVEN).floatValue();
             float enteredAmount = Float.parseFloat(internalTransferDTO.getAmount());
+
             // If savedMoney >= enteredAmount
-            if (savedMoney >= enteredAmount) {
+            if (emitterSavedMoney >= enteredAmount) {
                 // Save transfer
                 internalTransfer.setEmitter(emitter.get());
                 internalTransfer.setReceiver(receiver.get());
@@ -95,14 +94,20 @@ public class InternalTransferServiceImpl implements InternalTransferService {
                 internalTransferRepository.save(internalTransfer);
 
                 // Save new available amount
-                    // Subtract 0.5% fee
+                    // Subtract 0.5% fee from emitter funds
                 float fee = (float) (enteredAmount * 0.05);
-                float availableMoney = savedMoney - (fee + enteredAmount);
+                float availableMoney = emitterSavedMoney - (fee + enteredAmount);
                 emitter.get().setSavings(BigDecimal.valueOf(availableMoney));
                 userService.save(emitter.get());
-            } else throw new RuntimeException("The entered amount is higher than the saved money");
-        } else if (emitter.isPresent()) throw new RuntimeException(emitter.get().getEmail() + " doesn't exist");
-        else throw new RuntimeException(receiver.get().getEmail() + " doesn't exist");
+                    // Add sent money to receiver funds
+                receiver.get().setSavings(BigDecimal.valueOf(receiverSavedMoney + enteredAmount));
+                userService.save(receiver.get());
+            } else
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The entered amount is higher than the saved money");
+        } else if (emitter.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, emitter.get().getEmail() + " doesn't exist");
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, receiver.get().getEmail() + " doesn't exist");
 
         return internalTransfer;
     }
