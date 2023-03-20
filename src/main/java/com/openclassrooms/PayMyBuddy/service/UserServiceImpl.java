@@ -37,16 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmailAndPassword(String email) {
-        User user = new User();
-        Iterable<User> users = findAll();
-        for (User u : users) {
-            if (Objects.equals(u.getEmail(), email)) {
-                user.setEmail(u.getEmail());
-                user.setPassword(u.getPassword());
-                break;
-            }
-        }
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
 
         if (user.getEmail() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email " + email);

@@ -15,7 +15,7 @@ public interface UserService {
 
     Optional<User> findById(Long id);
 
-    User findUserByEmailAndPassword(String email);
+    User findByEmail(String email);
 
     UserDetailsDTO findUserByEmail(String email);
 

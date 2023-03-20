@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ExternalTransferServiceImpl implements ExternalTransferService {
     @Autowired
     private UserService userService;
@@ -78,6 +80,9 @@ public class ExternalTransferServiceImpl implements ExternalTransferService {
             // If savedMoney >= enteredAmount
             if (savedMoney >= enteredAmount) {
                 BankAccount bankAccount = bankAccountService.findBankAccountByIban(externalTransferDTO.getIban());
+                if (bankAccount == null)
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank account not found with iban " + externalTransferDTO.getIban());
+
                 // Save transfer
                 externalTransfer.setEmitter(emitter.get());
                 externalTransfer.setAmount(BigDecimal.valueOf(enteredAmount));

@@ -25,14 +25,4 @@ public class UserController {
             @PathVariable String email) {
         return userServiceImpl.findUserByEmail(email);
     }
-
-//    @PostMapping("/")
-//    public void add() {
-//        userServiceImpl.addUser();
-//    }
-//
-//    @DeleteMapping("/delete")
-//    public void delete() {
-//        userServiceImpl.deleteAllData();
-//    }
 }

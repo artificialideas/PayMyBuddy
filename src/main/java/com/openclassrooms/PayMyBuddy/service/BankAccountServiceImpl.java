@@ -30,30 +30,12 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount findBankAccountByIban(String iban) {
-        Iterable<BankAccount> bankAccounts = findAll();
-        BankAccount bankAccount = new BankAccount();
-
-        for (BankAccount b : bankAccounts) {
-            if (Objects.equals(b.getIban(), iban)) {
-                bankAccount.setId(b.getId());
-                bankAccount.setCredentials(b.getCredentials());
-                bankAccount.setIban(b.getIban());
-                bankAccount.setSwift(b.getSwift());
-                bankAccount.setOwner(b.getOwner());
-                break;
-            }
-        }
-
-        if (bankAccount.getIban() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank account not found with iban " + iban);
-        }
-
-        return bankAccount;
+        return bankAccountRepository.findByIban(iban);
     }
 
     @Override
     public BankAccount add(BankAccount bankAccount, Long userId) {
-        // Check if the entered Iban already exists
+        // Check if the entered Iban already exists (null -> doesn't exist)
         if (findBankAccountByIban(bankAccount.getIban()) == null) {
             Optional<User> owner = userService.findById(userId);
             if (owner.isPresent()) {
